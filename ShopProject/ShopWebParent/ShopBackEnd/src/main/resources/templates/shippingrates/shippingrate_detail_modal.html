@@ -1,0 +1,40 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info Shipping Rate</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+
+	<div class="form-group">
+		<label for="country">Destination Country</label> 
+		 <input
+			th:value="${shippingRate.country.name}" type="text" class="form-control" minlength="3"
+			maxlength="128" required="required" list="listStates" readonly="readonly">
+
+	</div>
+	<div class="form-group">
+		<label for="state">Destination State/Province</label> <input
+			th:value="${shippingRate.state}" type="text" class="form-control" minlength="3"
+			maxlength="128" required="required" list="listStates" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Shipping Rate (per DIM Weight)</label> <input
+			th:value="${shippingRate.rate}" type="number" class="form-control"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Days to Deliver</label> <input th:value="${shippingRate.days}"
+			type="number" class="form-control" required="required" readonly="readonly">
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Cod Supported</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<input th:checked="${shippingRate.codSupported}" class="m-2" type="checkbox" disabled="disabled">
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

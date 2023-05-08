@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Shipping Rates')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row">
+						<div class="col-12">
+							<h1 class="jumbotron-heading">Shipping Rates</h1>
+							<div class="icon mt-1 mb-2">
+								<a th:href="@{/shippingrates/create}"><i
+									class="fas fa-user-plus fa-2x icon-gray mr-1"></i></a>
+							</div>
+
+							<div th:replace="fragments :: form_search('shippingrates')"></div>
+
+							<div th:replace="fragments :: message"></div>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'id', 'Id')"></th>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'country', 'Country Name')"></th>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'state', 'State')"></th>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'rate', 'Rate')"></th>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'days', 'Days')"></th>
+										<th
+											th:replace="fragments :: column_link('shippingrates', 'codSupported', 'Cod Supported')"></th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="shippingrate : ${shippingRates}">
+										<th scope="row">[[${shippingrate.id}]]</th>
+										<td>[[${shippingrate.country.name}]]</td>
+										<td>[[${shippingrate.state}]]</td>
+										<td>[[${shippingrate.rate}]]</td>
+										<td>[[${shippingrate.days}]]</td>
+										<td><th:block th:if="${shippingrate.codSupported == true}">
+												<a
+													th:href="@{'/shippingrates/' + ${shippingrate.id} + '/enabled/false'}"><i
+													class="fas fa-check-circle fa-2x icon-success"></i></a>
+											</th:block> <th:block th:if="${shippingrate.codSupported == false}">
+												<a
+													th:href="@{'/shippingrates/' + ${shippingrate.id} + '/enabled/true'}"><i
+													class="fas fa-check-circle fa-2x icon-gray"></i></a>
+											</th:block></td>
+										<td><a class="link-detail"
+											th:href="@{'/shippingrates/detail/' + ${shippingrate.id}}"><i
+												class="fas fa-info-circle fa-2x icon-success"></i></a> <a
+											th:href="@{'/shippingrates/edit/' + ${shippingrate.id}}"><i
+												class="fas fa-edit fa-2x icon-success"></i></a> <a
+											class="link-delete" th:shippingrateId="${shippingrate.id}"
+											th:href="@{'/shippingrates/delete/' + ${shippingrate.id}}"><i
+												class="fas fa-trash fa-2x icon-danger"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div
+								th:replace="navigation :: paging('shippingrates', 'shippingrates')"></div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="detail-modal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+
+
+				<div th:replace="modal :: confirm-modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		url = "[[@{'/shippingrates'}]]";
+		$(document).ready(function(){
+			
+			$(".link-detail").on('click', function(e){
+				e.preventDefault();
+				link = $(this).attr("href");
+				$("#detail-modal").modal("show").find(".modal-content").load(link);
+			});
+			
+		});
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
+</body>
+</html>

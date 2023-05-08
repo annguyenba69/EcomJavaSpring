@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Topic Form')"></head>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/richtext/richtext.min.css}">
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Topic Form</h5>
+								<div class="card-body">
+									<form th:action="@{/topics/save}" method="post"
+										th:object="${topic}" onsubmit="return checkUnique(this)">
+										<input type="hidden" th:field="*{id}" />
+										<div class="form-group">
+											<label for="">Name</label> <input th:field="*{name}"
+												type="text" class="form-control" minlength="3"
+												maxlength="256" required="required">
+										</div>
+										<div class="form-group">
+											<label for="">Alias</label> <input
+												placeholder="If leaved empty default alias will be same name"
+												th:field="*{alias}" type="text" class="form-control"
+												minlength="3" maxlength="256">
+										</div>
+
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Enabled</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{enabled}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		url = "[[@{'/topics'}]]";
+			contextPath = "[[@{'/topics'}]]";
+		
+		function checkUnique(form){
+			urlCheckUnique = "[[@{'/topics/checkUnique'}]]";
+			topicName = $("#name").val();
+			topicAlias = $("#alias").val();
+			topicId = $("#id").val();
+			csrfValue = $("input[name='_csrf']").val();
+			params = {id: topicId, name : topicName, alias : topicAlias, _csrf: csrfValue};
+			$.post(urlCheckUnique, params, function(responseJSON){
+				if(responseJSON == "Ok"){
+					form.submit();
+				}else if(responseJSON == "DuplicatedName"){
+					showModal("Warning", "Duplicated Name");
+				}else if(responseJSON == "DuplicatedAlias"){
+					showModal("Warning", "Duplicated Alias");
+				}else{
+					showModal("Error", "Unknown Response From Server");
+				}
+			}).fail(function(){
+				showModal("Error", "Could Not Connect To The Server");
+			});
+			return false;
+		}
+	</script>
+	<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

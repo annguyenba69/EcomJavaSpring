@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Detail')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<main class="main">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
+				<div class="container">
+					<h1 class="page-title">
+						Wishlist<span>Shop</span>
+					</h1>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .page-header -->
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+						<li class="breadcrumb-item"><a th:href="@{/wishlists}">Wishlist</a></li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="page-content">
+				<div class="container">
+					<div th:replace="fragment :: form_search('wishlists')"></div>
+					<table class="table table-wishlist table-mobile">
+						<thead>
+							<tr>
+								<th
+									th:replace="fragment :: column_link_wish_keyword('wishlists', 'product', 'Product')"></th>
+								<th
+									th:replace="fragment :: column_link_wish_keyword('wishlists', 'product.price', 'Price')"></th>
+								<th
+									th:replace="fragment :: column_link_wish_keyword('wishlists', 'product.inStock', 'Stock Status')"></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<th:block th:each="wishlist : ${wishlists}">
+								<tr >
+									<td class="product-col">
+										<div class="product">
+											<figure class="product-media">
+												<a href="#"> <img
+													th:src="@{'/' + ${wishlist.product.mainImagePath}}"
+													alt="Product image">
+												</a>
+											</figure>
+
+											<h3 class="product-title">
+												<a th:href="@{${wishlist.product.URL}}">[[${wishlist.product.name}]]</a>
+											</h3>
+											<!-- End .product-title -->
+										</div> <!-- End .product -->
+									</td>
+									<td class="price-col">
+										<div class="new-price ml-1"
+											th:replace="format :: format_currency(${wishlist.product.discountPrice})"></div>
+									</td>
+									<td class="stock-col"><th:block
+											th:if="${wishlist.product.inStock}">
+											<span class="in-stock">In stock</span>
+										</th:block> <th:block th:unless="${wishlist.product.inStock}">
+											<span class="out-of-stock">Out of stock</span>
+										</th:block></td>
+									<td class="action-col"><th:block
+											th:if="${wishlist.product.inStock}">
+											<button class="btn btn-block btn-outline-primary-2 buttonAddToCartInWishList"
+												
+												th:productId="${wishlist.product.id}">
+												<i class="icon-cart-plus"></i>Add to Cart
+											</button>
+										</th:block> <th:block th:unless="${wishlist.product.inStock}">
+											<button class="btn btn-block btn-outline-primary-2 disabled">Out
+												of Stock</button>
+										</th:block></td>
+									<td class="remove-col"><a th:href="@{'/wishlists/delete/' + ${wishlist.product.id}}" class="btn-remove-wishlist">
+											<i class="icon-close"></i>
+										</a></td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+					<div th:replace="navigation :: paging('wishlists', 'WishList')"></div>
+				</div>
+				<!-- End .container -->
+			</div>
+		</main>
+
+
+		<div th:replace="modal :: modal"></div>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+
+	<script>
+		contextPath = "[[@{/}]]"
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";	
+	</script>
+	<script type="text/javascript" th:src="@{/js/add_cart.js}"></script>
+	<script type="text/javascript" th:src="@{/js/wishlist.js}"></script>
+	<th:block th:if="${message != null}">
+		<script>
+			var message = "[[${message}]]";
+				showModal("Success", message);
+			</script>
+	</th:block>
+</body>

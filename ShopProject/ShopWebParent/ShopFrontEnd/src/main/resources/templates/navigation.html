@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="paging_no_sort(url, entity)">
+		<nav th:if="${totalElements > 0}" aria-label="Page navigation example">
+			<p class="text-center m-1">Showing [[${entity}]]
+				#[[${startCount}]] to #[[${endCount}]] of [[${totalElements}]]</p>
+			<ul class="pagination justify-content-center">
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+				</li>
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+				</li>
+
+				<th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<li th:classappend="${currentPage == i ? 'active' : ''}"
+						class="page-item"><a
+						th:href="@{'/' + ${url} + '/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+						class="page-link" href="#">[[${i}]]</a></li>
+				</th:block>
+
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+				</li>
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+				</li>
+			</ul>
+		</nav>
+
+		<p th:if="${totalElements == 0}" class="text-center m-1">No Result
+			Search With Keyword: [[${keyword}]]</p>
+	</div>
+
+	<div th:fragment="paging(url, entity)">
+		<nav th:if="${totalElements > 0}" aria-label="Page navigation example">
+			<p class="text-center m-1">Showing [[${entity}]]
+				#[[${startCount}]] to #[[${endCount}]] of [[${totalElements}]]</p>
+			<ul class="pagination justify-content-center">
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
+				</li>
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Previous</a>
+				</li>
+
+				<th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<li th:classappend="${currentPage == i ? 'active' : ''}"
+						class="page-item"><a
+						th:href="@{'/' + ${url} + '/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}"
+						class="page-link" href="#">[[${i}]]</a></li>
+				</th:block>
+
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
+				</li>
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
+				</li>
+			</ul>
+		</nav>
+
+		<p th:if="${totalElements == 0}" class="text-center m-1">No Result
+			Search With Keyword: [[${keyword}]]</p>
+	</div>
+
+	<div th:fragment="paging_with_filter(url, entity)">
+		<nav th:if="${totalElements > 0}" aria-label="Page navigation example">
+			<p class="text-center m-1">Showing [[${entity}]]
+				#[[${startCount}]] to #[[${endCount}]] of [[${totalElements}]]</p>
+			<ul class="pagination justify-content-center">
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${brand != null ? '&brand=' + brand : ''} + ${filterPrice != null ? '&filterPrice=' + filterPrice : ''}}">First</a>
+				</li>
+				<li th:classappend="${currentPage <= 1 ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${brand != null ? '&brand=' + brand : ''} + ${filterPrice != null ? '&filterPrice=' + filterPrice : ''}}">Previous</a>
+				</li>
+
+				<th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<li th:classappend="${currentPage == i ? 'active' : ''}"
+						class="page-item"><a
+						th:href="@{'/' + ${url} + '/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${brand != null ? '&brand=' + brand : ''} + ${filterPrice != null ? '&filterPrice=' + filterPrice : ''}}"
+						class="page-link" href="#">[[${i}]]</a></li>
+				</th:block>
+
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${brand != null ? '&brand=' + brand : ''} + ${filterPrice != null ? '&filterPrice=' + filterPrice : ''}}">Next</a>
+				</li>
+				<li th:classappend="${currentPage >= totalPages ? 'disabled' : ''}"
+					class="page-item"><a class="page-link"
+					th:href="@{'/' + ${url} + '/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${brand != null ? '&brand=' + brand : ''} + ${filterPrice != null ? '&filterPrice=' + filterPrice : ''}}">Last</a>
+				</li>
+			</ul>
+		</nav>
+
+		<p th:if="${totalElements == 0}" class="text-center m-1">No Result
+			Search With Keyword: [[${keyword}]]</p>
+	</div>
+
+</body>
+</html>

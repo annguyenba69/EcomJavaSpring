@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Account')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+		<main class="main">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
+				<div class="container">
+					<h1 class="page-title">
+						Add New Address<span>Shop</span>
+					</h1>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .page-header -->
+			<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item"><a href="#">Shop</a></li>
+						<li class="breadcrumb-item active" aria-current="page">My
+							Account</li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="page-content">
+				<div class="dashboard">
+					<div class="container">
+						<div class="row">
+
+							<div class="col-lg-12">
+								<div class="card card-dashboard">
+									<div class="card-body">
+										<h3 class="card-title">Add New Address</h3>
+										<!-- End .card-title -->
+
+										<form th:action="@{/account/save_address}" method="post"
+											th:object="${address}">
+
+											<input type="hidden" name="id" id="id" th:field="*{id}">
+											<input type="hidden" id="enabled" name="enabled"
+												th:field="*{defaultForShipping}">
+											<div class="row">
+												<label>First Name *</label> <input type="text"
+													class="form-control" required="" id="firstName"
+													name="firstName" th:field="*{firstName}"> <label>Last
+													Name *</label> <input type="text" class="form-control" required=""
+													id="lastName" name="lastName" th:field="*{lastName}">
+											</div>
+											<!-- End .row -->
+
+											<label for="phoneNumber">Phone Number</label> <input
+												type="text" class="form-control" minlength="2"
+												maxlength="15" required="required" id="phoneNumber"
+												name="phoneNumber" th:field="*{phoneNumber}"> <label
+												for="exampleFormControlTextarea1">Address Line 1</label>
+											<textarea class="form-control"
+												id="exampleFormControlTextarea1" rows="3"
+												required="required" name="addressLine1"
+												th:field="*{addressLine1}"></textarea>
+
+											<label for="exampleFormControlTextarea1">Address Line
+												2</label>
+											<textarea class="form-control"
+												id="exampleFormControlTextarea1" rows="3" maxlength="64"
+												name="addressLine2" th:field="*{addressLine2}"></textarea>
+											<label for="exampleFormControlSelect1">Country</label> <select
+												class="form-control" th:field="*{country}">
+												<th:block th:each="country : ${countries}">
+													<option th:value="${country.id}">[[${country.name}]]</option>
+												</th:block>
+											</select> <label for="">City</label> <input type="text"
+												class="form-control" minlength="2" maxlength="45"
+												required="required" id="city" name="city" th:field="*{city}">
+											<label for="">State</label> <input type="text"
+												class="form-control" minlength="2" maxlength="45" id="state"
+												name="state" th:field="*{state}" list="listStates">
+											<datalist id="listStates"></datalist>
+											<label for="">Postal Code</label> <input type="text"
+												class="form-control" minlength="2" maxlength="10"
+												required="required" id="postalCode" name="postalCode"
+												th:field="*{postalCode}">
+											<button type="submit" class="btn btn-outline-primary-2">
+												<span>SAVE CHANGES</span> <i class="icon-long-arrow-right"></i>
+											</button>
+										</form>
+									</div>
+									<!-- End .card-body -->
+								</div>
+								<!-- End .card-dashboard -->
+							</div>
+						</div>
+						<!-- End .row -->
+					</div>
+					<!-- End .container -->
+				</div>
+				<!-- End .dashboard -->
+			</div>
+			<!-- End .page-content -->
+		</main>
+
+
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+	<script type="text/javascript"> 
+	contextPath = "[[@{/}]]";
+	
+			$(document).ready(function() {
+				dropDownCountry = $("#country");
+				dataListState = $("#listStates");
+				fieldState = $("#state");
+			
+				dropDownCountry.on("change", function() {
+					loadStatesForCountry();
+					fieldState.val("").focus();
+				});
+			});
+			function loadStatesForCountry() {
+				selectedCountry = $("#country option:selected");
+				countryId = selectedCountry.val();
+				url = contextPath + "states/listStateByCountry/" + countryId;
+				$.get(url, function(responseJSON) {
+					dataListState.empty();
+					$.each(responseJSON, function(index, state) {
+						$("<option>").val(state.name).text(state.name).appendTo(dataListState);
+					});
+				}).fail(function() {
+					alert('failed to connect to the server!');
+				});
+				}
+				
+	</script>
+</body>
+</html>

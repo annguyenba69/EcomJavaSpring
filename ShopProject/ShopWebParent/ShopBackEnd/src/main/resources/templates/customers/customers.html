@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('customers')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row">
+						<div class="col-12">
+							<h1 class="jumbotron-heading">Customers</h1>
+							<div class="icon mt-1 mb-2">
+								<a th:href="@{/customers/create}"><i
+									class="fas fa-user-plus fa-2x icon-gray mr-1"></i></a>
+							</div>
+
+							<div th:replace="fragments :: form_search('customers')"></div>
+
+							<div th:replace="fragments :: message"></div>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th
+											th:replace="fragments :: column_link('customers', 'id', 'Id')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'email', 'E-mail')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'firstName', 'First Name')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'lastName', 'Last Name')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'phoneNumber', 'Phone Number')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'createdTime', 'Create Time')"></th>
+										<th
+											th:replace="fragments :: column_link('customers', 'enabled', 'Enabled')"></th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="customer : ${customers}">
+										<th scope="row">[[${customer.id}]]</th>
+										<td>[[${customer.email}]]</td>
+										<td>[[${customer.firstName}]]</td>
+										<td>[[${customer.lastName}]]</td>
+										<td>[[${customer.phoneNumber}]]</td>
+										<td
+											th:text="${#dates.format(customer.createdTime, 'dd-MM-yyyy')}"></td>
+										<td><th:block th:if="${customer.enabled == true}">
+												<a
+													th:href="@{'/customers/' + ${customer.id} + '/enabled/false'}"><i
+													class="fas fa-check-circle fa-2x icon-success"></i></a>
+											</th:block> <th:block th:if="${customer.enabled == false}">
+												<a
+													th:href="@{'/customers/' + ${customer.id} + '/enabled/true'}"><i
+													class="fas fa-check-circle fa-2x icon-gray"></i></a>
+											</th:block></td>
+										<td><a class="link-detail"
+											th:href="@{'/customers/detail/' + ${customer.id}}"><i
+												class="fas fa-info-circle fa-2x icon-success"></i></a> <a
+											th:href="@{'/customers/edit/' + ${customer.id}}"><i
+												class="fas fa-edit fa-2x icon-success"></i></a> <a
+											class="link-delete" th:customerId="${customer.id}"
+											th:href="@{'/customers/delete/' + ${customer.id}}"><i
+												class="fas fa-trash fa-2x icon-danger"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div th:replace="navigation :: paging('customers', 'customers')"></div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="detail-modal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+
+
+				<div th:replace="modal :: confirm-modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	url = "[[@{'/customers'}]]";
+	
+	$(document).ready(function(){
+		$(".link-detail").on('click', function(e){
+			e.preventDefault();
+			linkDetail = $(this).attr("href");
+			$("#detail-modal").modal("show").find(".modal-content").load(linkDetail);
+		});
+	});
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
+</body>
+</html>

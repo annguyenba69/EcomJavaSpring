@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Checkout')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+		<main class="main">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
+				<div class="container">
+					<h1 class="page-title">
+						Checkout<span>Shop</span>
+					</h1>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .page-header -->
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item"><a href="#">Shop</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Checkout</li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="page-content">
+				<div class="checkout">
+					<div class="container">
+
+						<form action="#">
+							<div class="row">
+								<aside class="col-lg-6">
+									<div class="summary">
+										<h3 class="summary-title">Shipping Information</h3>
+										<!-- End .summary-title -->
+
+										<div class="accordion-summary" id="accordion-payment">
+											<div class="card">
+												<div class="card-header" id="heading-1">
+													<h2 class="card-title">
+														<span class="font-weight-bold">Ship To: </span> <span>[[${shippingAddress}]]</span>
+													</h2>
+												</div>
+												<div class="card-header mt-3" id="heading-1">
+													<h2 class="card-title">
+														<span class="font-weight-bold">Days To Deliver: </span> <span>[[${checkoutInfo.deliverDays}]]
+															day(s)</span>
+													</h2>
+												</div>
+												<div class="card-header mt-3" id="heading-1">
+													<h2 class="card-title">
+														<span class="font-weight-bold">Expected deliver
+															date: </span> <span
+															th:text="${#dates.format(checkoutInfo.deliverDate, 'dd-MMM-yyyy')}"></span>
+													</h2>
+												</div>
+											</div>
+										</div>
+										<!-- End .accordion -->
+
+										<a th:href="@{/account}"
+											class="btn btn-outline-primary-2 btn-order btn-block"> <span
+											class="">Change Address</span>
+										</a>
+									</div>
+									<!-- End .summary -->
+								</aside>
+								<aside class="col-lg-6">
+									<div class="summary">
+										<h3 class="summary-title">Your Order</h3>
+										<!-- End .summary-title -->
+
+										<table class="table table-summary">
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<th:block th:each="item : ${cartItems}">
+													<tr>
+														<td><a href="#">[[${item.product.name}]]</a></td>
+														<td>[[${item.quantity}]] x
+															<div class="new-price ml-1"
+																th:replace="format :: format_currency(${item.product.price})"></div>
+														</td>
+													</tr>
+												</th:block>
+
+												<tr class="summary-subtotal">
+													<td>Subtotal:</td>
+													<td><div class="new-price ml-1"
+															th:replace="format :: format_currency(${checkoutInfo.productTotal})"></div></td>
+												</tr>
+												<!-- End .summary-subtotal -->
+												<tr>
+													<td>Shipping:</td>
+													<td><div class="new-price ml-1"
+															th:replace="format :: format_currency(${checkoutInfo.shippingCostTotal})"></div></td>
+												</tr>
+												<tr class="summary-total">
+													<td>Total:</td>
+													<td><div class="new-price ml-1"
+															th:replace="format :: format_currency(${checkoutInfo.paymentTotal})"></div></td>
+												</tr>
+												<!-- End .summary-total -->
+											</tbody>
+										</table>
+										<!-- End .table table-summary -->
+										<form th:action="@{/place_order}" method="post">
+											<div class="form-check">
+												<input style="margin-top: 12px"  class="mr-2 form-check-input" type="radio"
+													name="paymentMethod" id="radioCOD" value="COD"> <label
+													class="form-check-label" for="exampleRadios1"> Cash
+													On Delivery (COD) </label>
+												<button type="submit" class="btn btn-primary">Place
+													with COD</button>
+											</div>
+
+										</form>
+
+									</div>
+									<!-- End .summary -->
+								</aside>
+								<!-- End .col-lg-3 -->
+							</div>
+							<!-- End .row -->
+						</form>
+					</div>
+					<!-- End .container -->
+				</div>
+				<!-- End .checkout -->
+			</div>
+			<!-- End .page-content -->
+		</main>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+</body>
+</html>

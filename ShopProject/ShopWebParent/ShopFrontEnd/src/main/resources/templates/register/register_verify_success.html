@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Verify Fail')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+		<main class="main">
+			<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item"><a href="#">Verify Fail</a></li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="error-content text-center"
+				style="background-image: url(assets/images/backgrounds/error-bg.jpg)">
+				<div class="container">
+					<h1 class="error-title">Verify Account Success</h1>
+
+					<p>Account verified successfully, now you can make purchases</p>
+					<a th:href="@{/}" class="btn btn-outline-primary-2 btn-minwidth-lg">
+						<span>BACK TO HOMEPAGE</span> <i class="icon-long-arrow-right"></i>
+					</a>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .error-content text-center -->
+		</main>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+</body>
+</html>

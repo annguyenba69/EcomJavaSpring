@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('reviews')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row">
+						<div class="col-12">
+							<h1 class="jumbotron-heading">Reviews</h1>
+							<div class="icon mt-1 mb-2">
+								<a th:href="@{/reviews/create}"><i
+									class="fas fa-user-plus fa-2x icon-gray mr-1"></i></a>
+							</div>
+
+							<div th:replace="fragments :: form_search('reviews')"></div>
+
+							<div th:replace="fragments :: message"></div>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th
+											th:replace="fragments :: column_link('reviews', 'id', 'Id')"></th>
+										<th
+											th:replace="fragments :: column_link('reviews', 'product', 'Product')"></th>
+										<th
+											th:replace="fragments :: column_link('reviews', 'customer', 'Customer')"></th>
+										<th
+											th:replace="fragments :: column_link('reviews', 'rating', 'Rating')"></th>
+										<th
+											th:replace="fragments :: column_link('reviews', 'reviewTime', 'Review Time')"></th>
+										<th
+											th:replace="fragments :: column_link('reviews', 'enabled', 'Enabled')"></th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="review : ${reviews}">
+										<th scope="row">[[${review.id}]]</th>
+										<td>[[${review.product.shortName}]]</td>
+										<td>[[${review.customer.fullName}]]</td>
+										<td>[[${review.rating}]]</td>
+										<td th:text="${#dates.format(review.reviewTime, 'dd-MM-yyyy')}"></td>
+										<td><th:block th:if="${review.enabled == true}">
+												<a th:href="@{'/reviews/' + ${review.id} + '/enabled/false'}"><i
+													class="fas fa-check-circle fa-2x icon-success"></i></a>
+											</th:block> <th:block th:if="${review.enabled == false}">
+												<a th:href="@{'/reviews/' + ${review.id} + '/enabled/true'}"><i
+													class="fas fa-check-circle fa-2x icon-gray"></i></a>
+											</th:block></td>
+										<td><a class="link-detail"
+											th:href="@{'/reviews/detail/' + ${review.id}}"><i
+												class="fas fa-info-circle fa-2x icon-success"></i></a> <a
+											th:href="@{'/reviews/edit/' + ${review.id}}"><i
+												class="fas fa-edit fa-2x icon-success"></i></a> <a
+											class="link-delete" th:reviewId="${review.id}"
+											th:href="@{'/reviews/delete/' + ${review.id}}"><i
+												class="fas fa-trash fa-2x icon-danger"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div th:replace="navigation :: paging('reviews', 'reviews')"></div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="detail-modal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+
+
+				<div th:replace="modal :: confirm-modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	url = "[[@{'/reviews'}]]";
+	
+	$(document).ready(function(){
+		$(".link-detail").on('click', function(e){
+			e.preventDefault();
+			linkDetail = $(this).attr("href");
+			$("#detail-modal").modal("show").find(".modal-content").load(linkDetail);
+		});
+	});
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
+</body>
+</html>

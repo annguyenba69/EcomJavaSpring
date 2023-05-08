@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Detail')"></head>
+<link rel="stylesheet" th:href="@{/assets/css/skins/skin-demo-13.css}">
+<link rel="stylesheet" th:href="@{/assets/css/demos/demo-13.css}">
+<!-- default styles -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+	media="all" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" th:href="@{/assets/rating.css}">
+<!-- important mandatory libraries -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+	type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<main class="main">
+			<div th:replace="breadcrumb :: breadcrumb"></div>
+			<div class="container">
+				<div class="product-details-top mb-2">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="product-gallery product-gallery-vertical">
+								<div class="row">
+									<figure class="product-main-image">
+										<img id="product-zoom"
+											th:src="@{'/' + ${product.mainImagePath}}"
+											data-zoom-image="assets/images/products/single/centered/1-big.jpg"
+											alt="product image">
+
+										<a href="#" id="btn-product-gallery"
+											class="btn-product-gallery"> <i class="icon-arrows"></i>
+										</a>
+									</figure>
+									<!-- End .product-main-image -->
+
+									<div id="product-zoom-gallery" class="product-image-gallery">
+										<th:block th:each="image : ${product.images}">
+											<a class="product-gallery-item" href="#"
+												th:data-image="@{'/' + ${image.imagePath}}"
+												th:data-zoom-image="@{'/' + ${image.imagePath}}"> <img
+												th:src="@{'/' + ${image.imagePath}}" alt="product side">
+											</a>
+										</th:block>
+									</div>
+									<!-- End .product-image-gallery -->
+								</div>
+								<!-- End .row -->
+							</div>
+							<!-- End .product-gallery -->
+						</div>
+						<!-- End .col-md-6 -->
+
+						<div class="col-md-6">
+							<div class="product-details product-details-centered">
+								<h1 class="product-title">[[${product.name}]]</h1>
+								<!-- End .product-title -->
+
+								<div class="ratings-container">
+									<div class="">
+
+										<!-- <input id="input-id" value="4" type="text" class="rating" data-size="lg" > -->
+										<input id="input-id" type="text" class="rating" data-size="lg"
+											th:value="${product.getAvgRatingReview}" disabled="disabled">
+										<!-- End .ratings-val -->
+									</div>
+									<!-- End .ratings -->
+									<a class="ratings-text" href="#product-review-link"
+										id="review-link">([[${product.getTotalReview}]]) Reviews</a>
+								</div>
+								<!-- End .rating-container -->
+
+								<div class="product-price">
+									<th:block th:unless="${product.isSale}">
+										<span th:replace="format :: format_currency(${product.price})"></span>
+									</th:block>
+									<th:block th:if="${product.isSale}">
+										<div class="new-price ml-1"
+											th:replace="format :: format_currency(${product.discountPrice})"></div>
+													&nbsp
+													<div style="text-decoration: line-through;"
+											th:replace="format :: format_currency_discount(${product.price})"></div>
+									</th:block>
+									<span th:if="${!product.inStock}"
+										class="badge badge-danger ml-2">Out Of Stock</span>
+								</div>
+								<!-- End .product-price -->
+
+								<div class="product-content">
+									<p th:utext="${product.shortDescription}"></p>
+								</div>
+								<!-- End .product-content -->
+
+
+
+								<div th:if="${product.inStock}" class="product-details-action">
+									<div class="details-action-col">
+										<div class="product-details-quantity">
+											<div class="input-group  input-spinner">
+												<input type="number" class="form-control " required=""
+													value="1" placeholder="" min="1" step="1" id="quantity">
+											</div>
+										</div>
+										<!-- End .product-details-quantity -->
+
+										<a href="#" class="btn-product btn-cart"
+											th:id="buttonAddToCart" th:productId="${product.id}"><span>add
+												to cart</span></a>
+									</div>
+									<!-- End .details-action-col -->
+
+									<div class="details-action-wrapper">
+										<a id="buttonAddWishList" th:productId="${product.id}" th:href="@{'/wishlists/add/' + ${product.id}}" class="btn-product btn-wishlist" title="Wishlist"><span>Add
+												to Wishlist</span></a>
+									</div>
+									<!-- End .details-action-wrapper -->
+								</div>
+								<!-- End .product-details-action -->
+
+								<div class="product-details-footer">
+									<div class="social-icons social-icons-sm">
+										<span>Category : </span> <a
+											th:href="@{${product.category.URL}}">
+											[[${product.category.name}]]</a>
+									</div>
+									<!-- End .product-cat -->
+
+									<div class="social-icons social-icons-sm">
+										<span>Brand : </span> <a> [[${product.brand.name}]]</a>
+									</div>
+								</div>
+								<!-- End .product-details-footer -->
+							</div>
+							<!-- End .product-details -->
+						</div>
+						<!-- End .col-md-6 -->
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .product-details-top -->
+
+				<div class="product-details-tab">
+					<ul class="nav nav-pills justify-content-center" role="tablist">
+						<li class="nav-item"><a class="nav-link active"
+							id="product-desc-link" data-toggle="tab" href="#product-desc-tab"
+							role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+						</li>
+						<li class="nav-item"><a class="nav-link"
+							id="product-shipping-link" data-toggle="tab"
+							href="#product-shipping-tab" role="tab"
+							aria-controls="product-shipping-tab" aria-selected="false">Shipping
+								&amp; Returns</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="product-desc-tab"
+							role="tabpanel" aria-labelledby="product-desc-link">
+							<div class="product-desc-content">
+								<h3>Product Information</h3>
+								<p th:utext="${product.fullDescription}"></p>
+
+							</div>
+							<!-- End .product-desc-content -->
+						</div>
+						<!-- .End .tab-pane -->
+
+						<!-- .End .tab-pane -->
+						<div class="tab-pane fade" id="product-shipping-tab"
+							role="tabpanel" aria-labelledby="product-shipping-link">
+							<div class="product-desc-content">
+								<h3>Delivery &amp; returns</h3>
+								<p>
+									We deliver to over 100 countries around the world. For full
+									details of the delivery options we offer, please view our <a
+										href="#">Delivery information</a><br> We hope you’ll love
+									every purchase, but if you ever need to return an item you can
+									do so within a month of receipt. For full details of how to
+									make a return, please view our <a href="#">Returns
+										information</a>
+								</p>
+							</div>
+							<!-- End .product-desc-content -->
+						</div>
+						<!-- .End .tab-pane -->
+						<!-- .End .tab-pane -->
+					</div>
+					<!-- End .tab-content -->
+				</div>
+				<!-- End .product-details-tab -->
+
+				<h2 class="title text-center mb-4">You May Also Like</h2>
+				<!-- End .title text-center -->
+				<div
+					class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+					data-toggle="owl"
+					data-owl-options="{
+                            &quot;nav&quot;: false, 
+                            &quot;dots&quot;: true,
+                            &quot;margin&quot;: 20,
+                            &quot;loop&quot;: false,
+                            &quot;responsive&quot;: {
+                                &quot;0&quot;: {
+                                    &quot;items&quot;:1
+                                },
+                                &quot;480&quot;: {
+                                    &quot;items&quot;:2
+                                },
+                                &quot;768&quot;: {
+                                    &quot;items&quot;:3
+                                },
+                                &quot;992&quot;: {
+                                    &quot;items&quot;:4
+                                },
+                                &quot;1200&quot;: {
+                                    &quot;items&quot;:4,
+                                    &quot;nav&quot;: true,
+                                    &quot;dots&quot;: false
+                                }
+                            }
+                        }">
+					<!-- End .product -->
+
+					<!-- End .product -->
+
+					<!-- End .product -->
+
+					<!-- End .product -->
+
+					<!-- End .product -->
+					<div class="owl-stage-outer">
+						<div class="owl-stage"
+							style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1485px;">
+							<th:block th:each="product : ${relatedProduct}">
+								<div class="owl-item active"
+									style="width: 277px; margin-right: 20px;">
+									<div class="product product-7 text-center">
+										<figure class="product-media">
+											<a th:href="@{${product.URL}}"> <img
+												th:src="@{'/' + ${product.mainImagePath}}"
+												alt="Product image" class="product-image"
+												style="height: 250px">
+											</a>
+
+
+										</figure>
+										<!-- End .product-media -->
+
+										<div class="product-body">
+											<div class="product-cat">
+												<a th:href="${product.category.URL}">[[${product.category.name}]]</a>
+											</div>
+											<!-- End .product-cat -->
+											<h3 class="product-title">
+												<a th:href="${product.getURL}">[[${product.name}]] </a>
+											</h3>
+											<!-- End .product-title -->
+											<div class="product-price">
+												<th:block th:unless="${product.isSale}">
+													<span
+														th:replace="format :: format_currency(${product.price})"></span>
+												</th:block>
+												<th:block th:if="${product.isSale}">
+													<div class="new-price ml-1"
+														th:replace="format :: format_currency(${product.discountPrice})"></div>
+													&nbsp
+													<div style="text-decoration: line-through;"
+														th:replace="format :: format_currency_discount(${product.price})"></div>
+												</th:block>
+											</div>
+											<!-- End .product-price -->
+											<div class="ratings-container">
+												<div class="">
+													<input id="input-id" type="text" class="rating"
+														data-size="lg" th:value="${product.getAvgRatingReview}"
+														disabled="disabled" style="font-size: 12px">
+												</div>
+												<!-- End .ratings -->
+
+											</div>
+											<span class="ratings-text">([[${product.getTotalReview}]])
+												Reviews</span>
+											<!-- End .rating-container -->
+
+										</div>
+										<!-- End .product-body -->
+									</div>
+								</div>
+							</th:block>
+						</div>
+					</div>
+					<div class="owl-nav">
+						<button type="button" role="presentation"
+							class="owl-prev disabled">
+							<i class="icon-angle-left"></i>
+						</button>
+						<button type="button" role="presentation" class="owl-next">
+							<i class="icon-angle-right"></i>
+						</button>
+					</div>
+					<div class="owl-dots disabled"></div>
+				</div>
+				<!-- End .owl-carousel -->
+				<div class="col-md-12">
+					<div class="comments">
+						<h3 class="title">[[${product.getTotalReview}]] Comments</h3>
+						<!-- End .title -->
+
+						<div class="reviews">
+							<th:block th:if="${reviews.empty}">
+								<p class="ml-4">This product has no reviews yet</p>
+							</th:block>
+							<th:block th:each="review : ${reviews}">
+								<div class="review">
+									<div class="row no-gutters">
+										<div class="col-auto">
+											<h4>
+												<a href="#">[[${review.customer.fullName}]]</a>
+											</h4>
+											<div class="ratings-container">
+												<div class="ratings">
+													<div th:if="${review.rating == 5}" class="ratings-val"
+														style="width: 100%;"></div>
+													<div th:if="${review.rating == 4}" class="ratings-val"
+														style="width: 80%;"></div>
+													<div th:if="${review.rating == 3}" class="ratings-val"
+														style="width: 60%;"></div>
+													<div th:if="${review.rating == 2}" class="ratings-val"
+														style="width: 40%;"></div>
+													<div th:if="${review.rating == 1}" class="ratings-val"
+														style="width: 20%;"></div>
+												</div>
+												<!-- End .ratings -->
+											</div>
+											<!-- End .rating-container -->
+											<span class="review-date"
+												th:text="${#dates.format(review.reviewTime, 'dd-MMM-yyyy')}"></span>
+										</div>
+										<!-- End .col -->
+										<div class="col">
+											<h4>[[${review.headline}]]</h4>
+
+											<div class="review-content">
+												<p>[[${review.comment}]]</p>
+											</div>
+											<!-- End .review-content -->
+
+											<!-- <div class="review-action">
+													<a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a> <a
+														href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+												</div> -->
+											<!-- End .review-action -->
+										</div>
+										<!-- End .col-auto -->
+									</div>
+									<!-- End .row -->
+								</div>
+
+							</th:block>
+							<!-- End .review -->
+						</div>
+					</div>
+					<th:block sec:authorize="isAuthenticated()">
+						<div class="reply">
+							<div class="heading">
+								<h3 class="title">Leave A Reply</h3>
+								<!-- End .title -->
+								<p class="title-desc">Please let us know your experience
+									with the product by leaving a comment</p>
+							</div>
+							<!-- End .heading -->
+
+							<div class="row">
+								<div class="col-md-12">
+									<div class="rating ml-3">
+										<label> <input type="radio" name="stars" value="1" />
+											<span class="icon">★</span>
+										</label> <label> <input type="radio" name="stars" value="2" />
+											<span class="icon">★</span> <span class="icon">★</span>
+										</label> <label> <input type="radio" name="stars" value="3" />
+											<span class="icon">★</span> <span class="icon">★</span> <span
+											class="icon">★</span>
+										</label> <label> <input type="radio" name="stars" value="4" />
+											<span class="icon">★</span> <span class="icon">★</span> <span
+											class="icon">★</span> <span class="icon">★</span>
+										</label> <label> <input type="radio" name="stars" value="5" />
+											<span class="icon">★</span> <span class="icon">★</span> <span
+											class="icon">★</span> <span class="icon">★</span> <span
+											class="icon">★</span>
+										</label>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label for="reply-name" class="sr-only">Headline</label> <input
+										type="text" class="form-control" id="headline"
+										name="reply-name" required="" placeholder="Headline *">
+								</div>
+							</div>
+							<input type="hidden" id="productId" th:value="${product.id}" />
+							<label for="reply-message" class="sr-only">Comment</label>
+							<textarea name="reply-message" id="comment" cols="30"
+								rows="4" class="form-control" required=""
+								placeholder="Comment *"></textarea>
+
+
+							<button type="submit" class="btn btn-outline-primary-2"
+								id="buttonComment">
+								<span>POST COMMENT</span> <i class="icon-long-arrow-right"></i>
+							</button>
+						</div>
+					</th:block>
+					<th:block sec:authorize="!isAuthenticated()">
+						<div class="reply">
+							<div class="heading">
+								<h3 class="title">You are not Login</h3>
+								<!-- End .title -->
+								<p class="title-desc">
+									Please login to be able to comment * <a th:href="@{/login}">Login
+										Here</a>
+								</p>
+							</div>
+							<!-- End .heading -->
+						</div>
+					</th:block>
+				</div>
+			</div>
+		</main>
+		<div th:replace="modal :: modal"></div>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+
+	<script>
+		contextPath = "[[@{/}]]"
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";	
+	</script>
+	<script type="text/javascript" th:src="@{/js/add_cart.js}"></script>
+	<script type="text/javascript" th:src="@{/js/review.js}"></script>
+	<script type="text/javascript" th:src="@{/js/wishlist.js}"></script>
+</body>
+</html>

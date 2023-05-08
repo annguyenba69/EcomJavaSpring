@@ -1,0 +1,66 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info User</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<th:block th:if="${question.approved}">
+		<p class="text-success">This question has been Approved</p>
+	</th:block>
+	<th:block th:unless="${question.approved}">
+		<p class="text-warning">This question has not been Approved</p>
+	</th:block>
+
+	<div class="form-group">
+		<label for="name">Product Name</label> <input
+			th:value="${question.product.name}" type="text" class="form-control"
+			readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlTextarea1">Question</label>
+		<textarea class="form-control" id=""
+			th:text="${question.questionContent}" rows="3" readonly="readonly"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="name">Asker By</label> <input
+			th:value="${question.asker.fullName}" type="text"
+			class="form-control" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Asker Time</label> <input
+			th:value="${question.askTime}" type="text" class="form-control"
+			readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Votes</label> <input th:value="${question.votes}"
+			type="text" class="form-control" readonly="readonly">
+	</div>
+	<th:block th:if="${question.isAnswer}">
+		<div class="form-group">
+			<label for="exampleFormControlTextarea1">Answer</label>
+			<textarea class="form-control" id=""
+				th:text="${question.answer}" rows="3" readonly="readonly"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="name">Answerer By</label> <input
+				th:value="${question.answerer.firstName}" type="text"
+				class="form-control" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="name">Answer Time</label> <input
+				th:value="${question.answerTime}" type="text" class="form-control"
+				readonly="readonly">
+		</div>
+	</th:block>
+	<th:block th:if="${question.isAnswer}">
+		<p class="text-success">This question has been Answered</p>
+	</th:block>
+	<th:block th:unless="${question.isAnswer}">
+		<p class="text-warning">This question has not been Answered</p>
+	</th:block>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

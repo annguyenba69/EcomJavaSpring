@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="overview">
+		<div class="form-group">
+			<label for="name">Product name</label> <input th:field="*{name}"
+				type="text" class="form-control" minlength="2" maxlength="256"
+				required="required">
+		</div>
+		<div class="form-group">
+			<label for="alias">Alias</label> <input th:field="*{alias}" placeholder="Default is product name (spaces are replaced by dashes)"
+				type="text" class="form-control" minlength="2" maxlength="256"
+				>
+		</div>
+		<div class="form-group">
+			<label for="">Brand</label> <select class="form-control"
+				th:field="*{brand}">
+				<th:block th:each="brand : ${brands}">
+					<option th:value="${brand.id}">[[${brand.name}]]</option>
+				</th:block>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="">Category</label> <select class="form-control"
+				th:field="*{category}">
+			</select>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">Enabled</label>
+			<div class="col-sm-8" style="padding-top: 7px">
+				<input th:field="*{enabled}" class="m-2" type="checkbox">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">In-Stock</label>
+			<div class="col-sm-8" style="padding-top: 7px">
+				<input th:field="*{inStock}" class="m-2" type="checkbox">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="cost">Cost</label> 
+			<input th:field="*{cost}" type="number" class="form-control" step="0.1" required="required">
+		</div>
+		<div class="form-group">
+			<label for="cost">Price</label> 
+			<input th:field="*{price}" type="number" class="form-control" step="0.1" required="required">
+		</div>
+		<div class="form-group">
+			<label for="cost">Discount</label> 
+			<input th:field="*{discountPercent}" type="number" class="form-control" step="0.1" required="required">
+		</div>
+	</div>
+</body>
+</html>

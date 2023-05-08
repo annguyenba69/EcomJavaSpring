@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Review Form')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Review Form</h5>
+								<div class="card-body">
+									<form th:action="@{/reviews/save}" method="post"
+										th:object="${review}">
+										<input type="hidden" th:field="*{id}" />
+										<div class="form-group">
+											<label for="">Product</label> <input
+												th:value="${review.product.name}" type="text"
+												class="form-control" readonly="readonly">
+										</div>
+										<div class="form-group">
+											<label for="">Customer</label> <input
+												th:value="${review.customer.fullName}" type="text"
+												class="form-control" readonly="readonly">
+										</div>
+										<div class="form-group">
+											<label for="">Rating</label> <input
+												th:value="${review.rating}" type="text" class="form-control"
+												readonly="readonly">
+										</div>
+										<div class="form-group">
+											<label for="">Review Time</label>
+											<p
+												th:text="${#dates.format(review.reviewTime, 'dd-MM-yyyy')}"></p>
+										</div>
+										<div class="form-group">
+											<label for="">HeadLine</label> <input th:field="*{headline}"
+												type="text" class="form-control" minlength="2"
+												maxlength="128" required="required">
+										</div>
+										<div class="form-group">
+											<label for="exampleFormControlTextarea1">Comment</label>
+											<textarea class="form-control"
+												id="" rows="3" th:field="*{comment}"></textarea>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Enabled</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{enabled}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="modal :: modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

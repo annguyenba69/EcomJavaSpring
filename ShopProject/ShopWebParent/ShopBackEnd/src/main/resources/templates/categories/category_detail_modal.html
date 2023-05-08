@@ -1,0 +1,45 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info Category</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<label for="name">Category Name</label> <input th:value="${category.name}"
+			type="text" class="form-control" minlength="3" maxlength="128"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Alias</label> <input th:value="${category.name}" type="text"
+			class="form-control" minlength="3" maxlength="128"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlSelect1">Parent Category</label> 
+		<th:block th:if="${category.parent != null}">
+			<span class="badge badge-primary mr-1">[[${category.parent.name}]]</span>
+		</th:block>
+		<th:block th:if="${category.parent == null}">
+			<span class="badge badge-primary mr-1">[No-Parent]</span>
+		</th:block>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Enabled</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<input th:checked="${category.enabled}" class="m-2" type="checkbox" disabled="disabled">
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Photos:</label>
+		<div class="col-sm-8">
+			<img class="img-fluid"
+				id="thumbnail" th:src="@{${category.photoImagesPath}}"
+				alt="Photos Preview" style="max-width: 150px" />
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('questions')"></head>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/richtext/richtext.min.css}">
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Menu Form</h5>
+								<div class="card-body">
+									<form th:action="@{/menus/save}" method="post"
+										th:object="${menu}" onsubmit="return checkUnique(this)">
+										<input type="hidden" th:field="*{id}" />
+										<input type="hidden" th:field="*{position}" />
+										<div class="form-group">
+											<label for="name">Title</label> <input th:field="*{title}"
+												type="text" class="form-control" required="required"
+												minlength="3" maxlength="128">
+										</div>
+										<div class="form-group">
+											<label for="name">Alias</label> <input th:field="*{alias}"
+												type="text" class="form-control" minlength="3"
+												maxlength="128">
+										</div>
+										<div class="form-group">
+											<label for="exampleFormControlTextarea1">Content</label>
+											<textarea class="form-control" id="" th:field="*{content}"
+												rows="3"></textarea>
+										</div>
+										<div class="form-group">
+											<label for="inputState">Type</label> <select id="inputState"
+												th:field="*{type}" class="form-control">
+												<option value="HEADER">Header Menu</option>
+												<option value="FOOTER">Footer Menu</option>
+											</select>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Enabled</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{enabled}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+	<script type="text/javascript">
+	url = "[[@{'/menus'}]]";
+	
+	$(document).ready(function(){
+			$("#content").richText();
+		})
+	
+	function checkUnique(form){
+		urlCheckUnique = "[[@{'/menus/checkUnique'}]]";
+		menuTitle = $("#title").val();
+		menuAlias = $("#alias").val();
+		menuId = $("#id").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {id: menuId, title : menuTitle, alias : menuAlias ,_csrf: csrfValue};
+		$.post(urlCheckUnique, params, function(responseJSON){
+			if(responseJSON == "Ok"){
+				form.submit();
+			}else if(responseJSON == "DuplicateTitle"){
+				showModal("Warning", "Duplicated Title");
+			}else if(responseJSON == "DuplicateAlias"){
+				showModal("Warning", "Duplicated Alias");
+			}else{
+				showModal("Error", "Unknown Response From Server");
+			}
+		}).fail(function(){
+			showModal("Error", "Could Not Connect To The Server");
+		});
+		return false;
+	}
+	</script>
+
+	<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

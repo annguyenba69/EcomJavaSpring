@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('User Form')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">User Form</h5>
+								<div class="card-body">
+									<form th:action="@{/users/save123}" method="post" th:object="${user}" enctype="multipart/form-data" onsubmit="return checkUniqueEmail(this)">
+										<input type="hidden" th:field="*{id}" />
+										<input type="hidden" th:field="*{photos}" />
+										<div class="form-group">
+											<label for="email">Email address</label> <input
+												th:field="*{email}" type="email" class="form-control" minlength = "3" maxlength="128" required="required">
+										</div>
+										<div class="form-group">
+											<label for="firstName">First name</label> <input
+												th:field="*{firstName}" type="text" class="form-control" minlength= "2" maxlength="45" required="required">
+										</div>
+										<div class="form-group">
+											<label for="lastName">Last name</label> <input
+												th:field="*{lastName}" type="text" class="form-control" minlength="2" maxlength="45" required="required">
+										</div>
+										<div class="form-group">
+											<label for="password">Password</label> 
+											<th:block th:if="${user.id == null}">
+												<input
+												th:field="*{password}" type="password" class="form-control" minlength="6" maxlength="64" required="required">
+											</th:block>
+											<th:block th:if="${user.id != null}">
+												<input
+												th:field="*{password}" type="password" class="form-control" minlength="6" maxlength="64">
+											</th:block>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Roles</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<th:block th:each="role : ${roles}">
+													<input class="m-2" type="checkbox" th:field="*{roles}"
+														th:value="${role.id}" th:text="${role.name}" />
+											- <small>[[${role.description}]]</small>
+													<br />
+												</th:block>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Enabled</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{enabled}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Photos:</label>
+											<div class="col-sm-8">
+													<input class="mb-2" name="image" type="file" id="fileImage"
+													accept="image/png, image/jpeg" />
+													
+												 <img class="img-fluid"
+													id="thumbnail" th:src="@{${user.photoImagesPath}}"
+													alt="Photos Preview" style="max-width: 150px" />
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="modal :: modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	url = "[[@{'/users'}]]";
+	MAX_FILE_SIZE  = 102400; //100KB
+	
+	function checkUniqueEmail(form){
+			return false;
+		urlCheckUniqueEmail = "[[@{'/users/checkUniqueEmail'}]]";
+		userEmail = $("#email").val();
+		userId = $("#id").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {id: userId, email : userEmail, _csrf: csrfValue};
+
+		
+	}
+	function showModal(title, message) {
+		$(".modal-title").text(title);
+		$(".modal-body").text(message);
+		$("#modal-dialog").modal();
+	}
+	</script>
+	<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

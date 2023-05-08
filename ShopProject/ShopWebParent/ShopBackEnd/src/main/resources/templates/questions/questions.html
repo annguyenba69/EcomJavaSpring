@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('questions')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row">
+						<div class="col-12">
+							<h1 class="jumbotron-heading">Questions</h1>
+							<div class="icon mt-1 mb-2">
+								<a th:href="@{/questions/create}"><i
+									class="fas fa-user-plus fa-2x icon-gray mr-1"></i></a>
+							</div>
+
+							<div th:replace="fragments :: form_search('questions')"></div>
+
+							<div th:replace="fragments :: message"></div>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th
+											th:replace="fragments :: column_link('questions', 'id', 'Id')"></th>
+										<th
+											th:replace="fragments :: column_link('questions', 'product', 'Product')"></th>
+										<th
+											th:replace="fragments :: column_link('questions', 'questionContent', 'Question')"></th>
+										<th
+											th:replace="fragments :: column_link('questions', 'asker', 'Asker')"></th>
+										<th
+											th:replace="fragments :: column_link('questions', 'askTime', 'Ask Time')"></th>
+										<th
+											th:replace="fragments :: column_link('questions', 'approved', 'Approved')"></th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="question : ${questions}">
+										<th scope="row">[[${question.id}]]</th>
+										<td><a
+											th:href="@{'/products/edit/' + ${question.product.id}}">[[${question.product.shortName}]]</a></td>
+										<td>[[${question.questionContent}]]</td>
+										<td><a
+											th:href="@{'/customers/edit/' + ${question.asker.id}}">[[${question.asker.fullName}]]</a></td>
+										<td th:text="${#dates.format(question.askTime, 'dd-MM-yyyy')}"></td>
+										<td><th:block th:if="${question.approved == true}">
+												<a
+													th:href="@{'/questions/' + ${question.id} + '/enabled/false'}"><i
+													class="fas fa-check-circle fa-2x icon-success"></i></a>
+											</th:block> <th:block th:if="${question.approved == false}">
+												<a
+													th:href="@{'/questions/' + ${question.id} + '/enabled/true'}"><i
+													class="fas fa-check-circle fa-2x icon-gray"></i></a>
+											</th:block></td>
+										<td><a class="link-detail"
+											th:href="@{'/questions/detail/' + ${question.id}}"><i
+												class="fas fa-info-circle fa-2x icon-success"></i></a> <a
+											th:href="@{'/questions/edit/' + ${question.id}}"><i
+												class="fas fa-edit fa-2x icon-success"></i></a> <a
+											class="link-delete" th:questionId="${question.id}"
+											th:href="@{'/questions/delete/' + ${question.id}}"><i
+												class="fas fa-trash fa-2x icon-danger"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div th:replace="navigation :: paging('questions', 'questions')"></div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="detail-modal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+
+
+				<div th:replace="modal :: confirm-modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	url = "[[@{'/questions'}]]";
+	
+	$(document).ready(function(){
+		$(".link-detail").on('click', function(e){
+			e.preventDefault();
+			linkDetail = $(this).attr("href");
+			$("#detail-modal").modal("show").find(".modal-content").load(linkDetail);
+		});
+	});
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
+</body>
+</html>

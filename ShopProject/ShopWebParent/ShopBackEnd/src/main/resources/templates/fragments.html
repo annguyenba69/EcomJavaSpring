@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:fragment="page_head('title')">
+<meta charset="ISO-8859-1">
+<title>[[${title}]]</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	rel="stylesheet">
+<script type="text/javascript"
+	th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<body>
+
+	<div th:fragment="sidebar">
+		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
+			class="fas fa-bars"></i>
+		</a>
+		<nav id="sidebar" class="sidebar-wrapper">
+			<div class="sidebar-content">
+				<div class="sidebar-brand">
+					<a href="#">Admin</a>
+					<div id="close-sidebar">
+						<i class="fas fa-times"></i>
+					</div>
+				</div>
+				<div class="sidebar-header">
+					<div class="user-pic">
+						<img class="img-responsive img-rounded" th:src="@{${#authentication.getPrincipal().getPhotos}}"
+            alt="User picture">
+					</div>
+					<div class="user-info">
+						<span class="user-name"><strong sec:authentication="principal.fullname"></strong>
+						</span><span
+							class="user-status"> <i class="fa fa-circle"></i> <span>Online</span>
+						</span>
+					</div>
+				</div>
+				<!-- sidebar-search  -->
+				<div class="sidebar-menu">
+					<ul>
+						<li class="header-menu"><span>General</span></li>
+						<li class="sidebar-dropdown"><a href="#"> <i
+								class="fa fa-tachometer-alt"></i> <span>Dashboard</span>
+						</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/reports}">Reports</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-rectangle-ad"></i><span>Banners</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/banners}">List Banners</a></li>
+									<li><a th:href="@{/banners/create}">Create Banners</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-clipboard-check"></i><span>Reviews</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/reviews}">List Reviews</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-list"></i><span>Orders</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/orders}">List Orders</a></li>
+									<li><a th:href="@{/orders/create}">Create Order</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-newspaper"></i><span>Articles</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/articles}">List Articles</a></li>
+									<li><a th:href="@{/articles/create}">Create Articles</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i class="fa-solid fa-folder-minus"></i><span>Menu</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/menus}">List Menus</a></li>
+									<li><a th:href="@{/menus/create}">Create Menu</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-brands fa-product-hunt"></i><span>Products</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/products}">List Products</a></li>
+									<li><a th:href="@{/products/create}">Create Product</a></li>
+									<li><a th:href="@{/questions}">List Questions</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-c"></i><span>Categories</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/categories}">List Categories</a></li>
+									<li><a th:href="@{/categories/create}">Create Category</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-copyright"></i><span>Brands</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/brands}">List Brand</a></li>
+									<li><a th:href="@{/brands/create}">Create Brand</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"><i
+								class="fa-solid fa-truck-fast"></i><span>Shipping Rates</span> </a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/shippingrates}">List Shipping Rate</a></li>
+									<li><a th:href="@{/shippingrates/create}">Create
+											Shipping Rates</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"> <i
+								class="fa-sharp fa-solid fa-gear"></i><span>Settings</span>
+						</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/settings}">List Settings </a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"> <i
+								class="fa-sharp fa-solid fa-users"></i><span>Customers</span>
+						</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/customers}">List Customers </a></li>
+									<li><a th:href="@{/customers/create}">Create Customer</a></li>
+								</ul>
+							</div></li>
+						<li class="sidebar-dropdown"><a href="#"> <i
+								class="fa-sharp fa-solid fa-shield"></i> <span>Users</span>
+						</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li><a th:href="@{/users}">List Users </a></li>
+									<li><a th:href="@{/users/create}">Create</a></li>
+								</ul>
+							</div></li>
+						
+					</ul>
+				</div>
+				<!-- sidebar-menu  -->
+			</div>
+
+			<!-- sidebar-content  -->
+			<div class="sidebar-footer">
+				
+			</div>
+		</nav>
+	</div>
+
+	<div th:fragment="nav">
+		<nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark">
+			
+			<div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+		
+				<ul class="navbar-nav ml-auto nav-flex-icons">
+					<li class="nav-item">
+						<p style="color: white; margin-top: 10px;"
+							sec:authentication="principal.fullname"></p>
+					</li>
+					<li class="nav-item avatar dropdown"><a
+						class="nav-link dropdown-toggle waves-effect waves-light"
+						id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false"> <img
+							style="width: 30px"
+							th:src="@{${#authentication.getPrincipal().getPhotos}}"
+							class="rounded-circle z-depth-0" alt="avatar image">
+					</a>
+						<div
+							class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+							aria-labelledby="navbarDropdownMenuLink-55">
+							<a class="dropdown-item waves-effect waves-light"
+								th:href="@{/account}">Account</a>
+							<form th:action="@{/logout}" method="post">
+								<input type="submit"
+									class="dropdown-item waves-effect waves-light" href="#"
+									value="logout" />
+							</form>
+						</div></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<th th:fragment="column_link(url, field, fieldName)"><a
+		class="text-decoration-none text-white"
+		th:href="@{'/' + ${url} + '/' + ${currentPage} + '?sortField=' + ${field} + '&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${fieldName}]]</a>
+	</th>
+
+	<div th:fragment="form_search(url)" class="form-search mb-3">
+		<form th:action="@{'/' + ${url} + '/1'}"
+			class="form-inline my-2 my-lg-0">
+			<input type="hidden" name="sortDir" th:value="${sortDir}" /> <input
+				type="hidden" name="sortField" th:value="${sortField}" /> <input
+				name="keyword" th:value="${keyword}" class="form-control mr-sm-2"
+				type="search" placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0 mr-2"
+				type="submit">Search</button>
+			<button class="btn btn-outline-danger my-2 my-sm-0 btn-clear"
+				type="submit">Clear</button>
+		</form>
+	</div>
+
+	<div th:fragment="footer">
+		<footer class="text-center">
+			<div class="mb-2">
+				<small> © 2023 made with <i class="fa fa-heart"
+					style="color: red"></i> by - An
+				</small>
+			</div>
+		</footer>
+	</div>
+
+	<div th:fragment="message" th:if="${message != null}"
+		class="alert alert-primary" role="alert">
+		<strong>Message !</strong> [[${message}]]
+		<button type="button" class="close" data-dismiss="alert"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+	</div>
+</body>
+</html>

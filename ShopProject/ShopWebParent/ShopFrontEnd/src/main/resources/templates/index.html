@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Login')"></head>
+<!-- default styles -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<!-- important mandatory libraries -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+	type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<div class="col-lg-12">
+			<div
+				class="category-banners-slider owl-carousel owl-simple owl-nav-inside owl-loaded owl-drag"
+				data-toggle="owl"
+				data-owl-options="{
+                                    &quot;nav&quot;: false,
+                                    &quot;responsive&quot;: {
+                                        &quot;768&quot;: {
+                                            &quot;nav&quot;: true
+                                        }
+                                    }
+                                }">
+				<!-- End .banner -->
+
+				<!-- End .banner -->
+				<div class="owl-stage-outer">
+					<div class="owl-stage"
+						style="transform: translate3d(-2791px, 0px, 0px); transition: all 0.4s ease 0s; width: 5583px;">
+
+						<th:block th:each="banner : ${banners}">
+							<div class="owl-item cloned" style="width: 930.4px;">
+								<div class="banner banner-poster">
+
+									<a th:href="@{${banner.link}}"> <img
+										th:src="@{${banner.imagePath}}" alt="Banner">
+									</a>
+									<!-- End .banner-content -->
+								</div>
+							</div>
+						</th:block>
+
+					</div>
+				</div>
+				<div class="owl-nav">
+					<button type="button" role="presentation" class="owl-prev">
+						<i class="icon-angle-left"></i>
+					</button>
+					<button type="button" role="presentation" class="owl-next">
+						<i class="icon-angle-right"></i>
+					</button>
+				</div>
+				<div class="owl-dots">
+					<button role="button" class="owl-dot">
+						<span></span>
+					</button>
+					<button role="button" class="owl-dot active">
+						<span></span>
+					</button>
+				</div>
+			</div>
+			<!-- End .owl-carousel -->
+
+		</div>
+		<div class="container">
+			<h2 class="title text-center mb-4">Explore By Categories</h2>
+			<!-- End .title text-center -->
+
+			<div class="cat-blocks-container">
+				<div class="row">
+
+					<div th:each="category : ${listCategoriesNoChildren}"
+						class="col-2 col-sm-2 col-lg-2">
+						<a th:href="@{'/c/' + ${category.alias}}" class="cat-block">
+							<figure>
+								<span> <img th:src="@{${category.photoImagesPath}}"
+									alt="Category image">
+								</span>
+							</figure>
+
+							<h3 class="cat-block-title" style="font-size: 14px">[[${category.name}]]</h3>
+							<!-- End .cat-block-title --px>
+                            </a>
+                        </div><!-- End .col-sm-4 col-lg-2 -->
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .cat-blocks-container -->
+			</div>
+
+				<!-- End .container -->
+			</div>
+
+			<div class="bg-light pt-5 pb-6">
+				<div class="container trending-products">
+					<div class="heading heading-flex mb-3">
+						<div class="heading-left">
+							<h2 class="title">Trending Products</h2>
+							<!-- End .title -->
+						</div>
+						<!-- End .heading-left -->
+
+						<div class="heading-right">
+							<ul class="nav nav-pills nav-border-anim justify-content-center"
+								role="tablist">
+								<li class="nav-item"><a class="nav-link active"
+									id="trending-top-link" data-toggle="tab"
+									href="#trending-top-tab" role="tab"
+									aria-controls="trending-top-tab" aria-selected="true">Top
+										Rated</a></li>
+								<li class="nav-item"><a class="nav-link"
+									id="trending-best-link" data-toggle="tab"
+									href="#trending-best-tab" role="tab"
+									aria-controls="trending-best-tab" aria-selected="false">Best
+										Selling</a></li>
+								<li class="nav-item"><a class="nav-link"
+									id="trending-sale-link" data-toggle="tab"
+									href="#trending-sale-tab" role="tab"
+									aria-controls="trending-sale-tab" aria-selected="false">On
+										Sale</a></li>
+							</ul>
+						</div>
+						<!-- End .heading-right -->
+					</div>
+					<!-- End .heading -->
+
+					<div class="row">
+						<div class="col-xl-5col d-none d-xl-block">
+							<div class="banner">
+								<a th:href="@{/c/carrier_cellphones}"> <img
+									src="assets/images/demos/demo-4/banners/banner-4.jpg"
+									alt="banner">
+								</a>
+							</div>
+							<!-- End .banner -->
+						</div>
+						<!-- End .col-xl-5col -->
+
+						<div class="col-xl-4-5col">
+							<div
+								class="tab-content tab-content-carousel just-action-icons-sm">
+								<div class="tab-pane p-0 fade show active" id="trending-top-tab"
+									role="tabpanel" aria-labelledby="trending-top-link">
+									<div
+										class="owl-carousel owl-full carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+										data-toggle="owl"
+										data-owl-options="{
+                                            &quot;nav&quot;: true, 
+                                            &quot;dots&quot;: false,
+                                            &quot;margin&quot;: 20,
+                                            &quot;loop&quot;: false,
+                                            &quot;responsive&quot;: {
+                                                &quot;0&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;480&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;768&quot;: {
+                                                    &quot;items&quot;:3
+                                                },
+                                                &quot;992&quot;: {
+                                                    &quot;items&quot;:4
+                                                }
+                                            }
+                                        }">
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+										<div class="owl-stage-outer">
+											<div class="owl-stage"
+												style="transform: translate3d(0px, 0px, 0px); transition: all 0.4s ease 0s; width: 1188px;">
+												<th:block th:each="product : ${listFiveProductsTopRates}">
+													<div class="owl-item"
+														style="width: 217.6px; margin-right: 20px;">
+														<div class="product product-2">
+															<figure class="product-media">
+																<span class="product-label label-circle label-top">Top</span>
+																<a th:href="@{${product.URL}}"> <img
+																	th:src="${product.mainImagePath}"
+																	th:alt="${product.name}" class="product-image">
+																</a>
+
+																<div class="product-action-vertical">
+															
+															</figure>
+															<!-- End .product-media -->
+
+															<div class="product-body">
+																<div class="product-cat">
+																	<a th:href="@{${product.category.URL}}">[[${product.category.name}]]</a>
+																</div>
+																<!-- End .product-cat -->
+																<h3 class="product-title">
+																	<a th:href="@{${product.URL}}">[[${product.name}]]</a>
+																</h3>
+																<!-- End .product-title -->
+																<div class="product-price">
+																	<th:block th:unless="${product.isSale}">
+																		<span
+																			th:replace="format :: format_currency(${product.price})"></span>
+																	</th:block>
+																	<th:block th:if="${product.isSale}">
+																		<div class="new-price ml-1"
+																			th:replace="format :: format_currency(${product.discountPrice})"></div>
+													&nbsp
+													<div style="text-decoration: line-through;"
+																			th:replace="format :: format_currency_discount(${product.price})"></div>
+																	</th:block>
+																</div>
+																<!-- End .product-price -->
+																<div class="ratings-container">
+																	<div class="">
+
+																		<!-- <input id="input-id" value="4" type="text" class="rating" data-size="lg" > -->
+																		<input id="input-id" type="text" class="rating"
+																			data-size="sm"
+																			th:value="${product.getAvgRatingReview}"
+																			disabled="disabled">
+																		<!-- End .ratings-val -->
+																	</div>
+																	<!-- End .ratings -->
+
+																</div>
+																<!-- End .rating-container -->
+
+																<a class="ratings-text" id="review-link">([[${product.getTotalReview}]])
+																	Reviews</a>
+																<!-- End .product-nav -->
+															</div>
+															<!-- End .product-body -->
+														</div>
+													</div>
+												</th:block>
+											</div>
+										</div>
+										<div class="owl-nav">
+											<button type="button" role="presentation"
+												class="owl-prev disabled">
+												<i class="icon-angle-left"></i>
+											</button>
+											<button type="button" role="presentation" class="owl-next">
+												<i class="icon-angle-right"></i>
+											</button>
+										</div>
+										<div class="owl-dots disabled"></div>
+									</div>
+									<!-- End .owl-carousel -->
+								</div>
+								<!-- .End .tab-pane -->
+
+								<div class="tab-pane p-0 fade" id="trending-best-tab"
+									role="tabpanel" aria-labelledby="trending-best-link">
+									<div
+										class="owl-carousel owl-full carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+										data-toggle="owl"
+										data-owl-options="{
+                                            &quot;nav&quot;: true, 
+                                            &quot;dots&quot;: false,
+                                            &quot;margin&quot;: 20,
+                                            &quot;loop&quot;: false,
+                                            &quot;responsive&quot;: {
+                                                &quot;0&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;480&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;768&quot;: {
+                                                    &quot;items&quot;:3
+                                                },
+                                                &quot;992&quot;: {
+                                                    &quot;items&quot;:4
+                                                }
+                                            }
+                                        }">
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+										<div class="owl-stage-outer">
+											<div class="owl-stage"
+												style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1188px;">
+												<div class="owl-item"
+													style="width: 217.6px; margin-right: 20px;">
+													<div class="product product-2">
+														<figure class="product-media">
+															<span class="product-label label-circle label-new">New</span>
+															<a href="product.html"> <img
+																src="assets/images/demos/demo-4/products/product-3.jpg"
+																alt="Product image" class="product-image">
+															</a>
+
+															<div class="product-action-vertical">
+																<a href="#" class="btn-product-icon btn-wishlist"
+																	title="Add to wishlist"></a>
+															</div>
+															<!-- End .product-action -->
+
+															<div class="product-action">
+																<a href="#" class="btn-product btn-cart"
+																	title="Add to cart"><span>add to cart</span></a> <a
+																	href="popup/quickView.html"
+																	class="btn-product btn-quickview" title="Quick view"><span>quick
+																		view</span></a>
+															</div>
+															<!-- End .product-action -->
+														</figure>
+														<!-- End .product-media -->
+
+														<div class="product-body">
+															<div class="product-cat">
+																<a href="#">Tablets</a>
+															</div>
+															<!-- End .product-cat -->
+															<h3 class="product-title">
+																<a href="product.html">Apple - 11 Inch iPad Pro with
+																	Wi-Fi 256GB </a>
+															</h3>
+															<!-- End .product-title -->
+															<div class="product-price">$899.99</div>
+															<!-- End .product-price -->
+															<div class="ratings-container">
+																<div class="ratings">
+																	<div class="ratings-val" style="width: 80%;"></div>
+																	<!-- End .ratings-val -->
+																</div>
+																<!-- End .ratings -->
+																<span class="ratings-text">( 4 Reviews )</span>
+															</div>
+															<!-- End .rating-container -->
+
+															<div class="product-nav product-nav-dots">
+																<a href="#" style="background: #edd2c8;"><span
+																	class="sr-only">Color name</span></a> <a href="#"
+																	style="background: #eaeaec;"><span class="sr-only">Color
+																		name</span></a> <a href="#" class="active"
+																	style="background: #333333;"><span class="sr-only">Color
+																		name</span></a>
+															</div>
+															<!-- End .product-nav -->
+														</div>
+														<!-- End .product-body -->
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="owl-nav">
+											<button type="button" role="presentation"
+												class="owl-prev disabled">
+												<i class="icon-angle-left"></i>
+											</button>
+											<button type="button" role="presentation" class="owl-next">
+												<i class="icon-angle-right"></i>
+											</button>
+										</div>
+										<div class="owl-dots disabled"></div>
+									</div>
+									<!-- End .owl-carousel -->
+								</div>
+								<!-- .End .tab-pane -->
+								<div class="tab-pane p-0 fade" id="trending-sale-tab"
+									role="tabpanel" aria-labelledby="trending-sale-link">
+									<div
+										class="owl-carousel owl-full carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+										data-toggle="owl"
+										data-owl-options="{
+                                            &quot;nav&quot;: true, 
+                                            &quot;dots&quot;: false,
+                                            &quot;margin&quot;: 20,
+                                            &quot;loop&quot;: false,
+                                            &quot;responsive&quot;: {
+                                                &quot;0&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;480&quot;: {
+                                                    &quot;items&quot;:2
+                                                },
+                                                &quot;768&quot;: {
+                                                    &quot;items&quot;:3
+                                                },
+                                                &quot;992&quot;: {
+                                                    &quot;items&quot;:4
+                                                }
+                                            }
+                                        }">
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+
+										<!-- End .product -->
+										<div class="owl-stage-outer">
+											<div class="owl-stage"
+												style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 951px;">
+												
+												</div>
+											</div>
+										</div>
+										<div class="owl-nav disabled">
+											<button type="button" role="presentation"
+												class="owl-prev disabled">
+												<i class="icon-angle-left"></i>
+											</button>
+											<button type="button" role="presentation"
+												class="owl-next disabled">
+												<i class="icon-angle-right"></i>
+											</button>
+										</div>
+										<div class="owl-dots disabled"></div>
+									</div>
+									<!-- End .owl-carousel -->
+								</div>
+								<!-- .End .tab-pane -->
+							</div>
+							<!-- End .tab-content -->
+						</div>
+						<!-- End .col-xl-4-5col -->
+					</div>
+					<!-- End .row -->
+				</div>
+			<div th:replace="fragment :: footer"></div>
+		</div>
+		<div th:replace="fragment :: script"></div>
+</body>
+</html>

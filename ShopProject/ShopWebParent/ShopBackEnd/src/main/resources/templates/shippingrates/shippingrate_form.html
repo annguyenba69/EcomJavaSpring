@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('ShippingRate Form')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">ShippingRate Form</h5>
+								<div class="card-body">
+									<form th:action="@{/shippingrates/save}" method="post"
+										th:object="${shippingrate}">
+										<input type="hidden" th:field="*{id}" />
+										<div class="form-group">
+											<label for="country">Destination Country</label> <select
+												class="form-control" th:field="*{country}">
+												<th:block th:each="country : ${countries}">
+													<option th:value="${country.id}">[[${country.name}]]</option>
+												</th:block>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="state">Destination State/Province</label> <input
+												th:field="*{state}" type="text" class="form-control"
+												minlength="3" maxlength="128" required="required" list="listStates">
+											<datalist id="listStates">
+
+											</datalist>
+										</div>
+										<div class="form-group">
+											<label for="name">Shipping Rate (per DIM Weight)</label> <input
+												th:field="*{rate}" type="number" class="form-control"
+												required="required">
+										</div>
+										<div class="form-group">
+											<label for="name">Days to Deliver</label> <input
+												th:field="*{days}" type="number" class="form-control"
+												required="required">
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Cod Supported</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{codSupported}" class="m-2"
+													type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		contextPath = "[[@{/}]]";
+	</script>
+	<script type="text/javascript" th:src="@{/js/shipping_rate_form.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="track">
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Time</th>
+					<th scope="col">Status</th>
+					<th scope="col">Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="orderTrack : ${order.orderTracks}">
+					<input type="hidden" name="orderTrackId" th:value="${orderTrack.id}" />
+					<input type="hidden" name="orderTrackStatus" th:value="${orderTrack.status}" />
+					<input type="hidden" name="orderTrackUpdatedTime" th:value="${orderTrack.updatedTime}" />
+					<input type="hidden" name="orderTrackNotes" th:value="${orderTrack.notes}" />
+					<th>[[${orderTrack.updatedTime}]]</th>
+					<td>[[${orderTrack.status}]]</td>
+					<td>[[${orderTrack.notes}]]</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

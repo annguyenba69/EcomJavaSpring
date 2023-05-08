@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('User Form')"></head>
+<body>
+<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Banner Form</h5>
+								<div class="card-body">
+									<form th:action="@{/banners/save}" method="post" th:object="${banner}" enctype="multipart/form-data" onsubmit="return checkUnique(this)">
+										<input type="hidden" th:field="*{id}" />
+										<input type="hidden" th:field="*{image}" />
+										<div class="form-group">
+											<label for="name">Title</label> <input
+												th:field="*{title}" type="text" class="form-control" minlength = "1" maxlength="256" required="required">
+										</div>
+										<div class="form-group">
+											<label for="name">Link</label> <input
+												th:field="*{link}" type="text" class="form-control" minlength = "1" maxlength="256" required="required">
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Image:</label>
+											<div class="col-sm-8">
+													<input class="mb-2" name="fileImage" type="file" id="fileImage"
+													accept="image/png, image/jpeg" />
+													
+												 <img class="img-fluid"
+													id="thumbnail" th:src="@{${banner.imagePath}}"
+													alt="Photos Preview" style="max-width: 150px" />
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Enabled</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{enabled}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="modal :: modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	
+	url = "[[@{'/banners'}]]";
+	MAX_FILE_SIZE  = 921600; //100KB
+	
+	function checkUnique(form){
+		urlCheckUnique = "[[@{'/banners/checkUnique'}]]";
+		bannerTitle = $("#title").val();
+		bannerId = $("#id").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {id: bannerId, title : bannerTitle, _csrf: csrfValue};
+		$.post(urlCheckUnique, params, function(responseJSON){
+			if(responseJSON == "Ok"){
+				form.submit();
+			}else if(responseJSON == "DuplicatedTitle"){
+				showModal("Warning", "Duplicated Title");
+			}else{
+				showModal("Error", "Unknown Response From Server");
+			}
+		}).fail(function(){
+			showModal("Error", "Could Not Connect To The Server");
+		});
+		return false;
+	}
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

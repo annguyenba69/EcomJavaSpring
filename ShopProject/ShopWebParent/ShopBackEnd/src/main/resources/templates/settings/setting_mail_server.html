@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="mail_server">
+		<form th:action="@{/settings/saveMailServer}" method="post">
+			<div class="form-group">
+				<label>SMTP Server Host Name: </label> <input name="MAIL_HOST"
+					th:value="${MAIL_HOST}" type="text" class="form-control"
+					minlength="2" maxlength="45" required="required">
+			</div>
+			<div class="form-group">
+				<label for="">Port Number: </label> <input name="MAIL_PORT"
+					th:value="${MAIL_PORT}" type="text" class="form-control"
+					minlength="2" maxlength="45" required="required">
+			</div>
+			<div class="form-group">
+				<label for="">Username: </label> <input name="MAIL_USERNAME"
+					th:value="${MAIL_USERNAME}" type="text" class="form-control"
+					minlength="2" maxlength="45" required="required">
+			</div>
+			<div class="form-group">
+				<label for="">Password: </label> <input name="MAIL_PASSWORD"
+					th:value="${MAIL_PASSWORD}" type="text" class="form-control"
+					minlength="2" maxlength="45" required="required">
+			</div>
+			<div class="form-group">
+				<label for="siteName">Server Authentication Required: </label> <select
+					name="SMTP_AUTH" class="form-control">
+					<option th:selected="(${SMTP_AUTH} == 'true')" value="true">True</option>
+					<option th:selected="(${SMTP_AUTH} == 'false')" value="false">False</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="siteName">Server Requires Secured Connection
+					(TLS): </label> <select name="SMTP_SECURED" class="form-control">
+					<option th:selected="(${SMTP_SECURED} == 'true')" value="true">True</option>
+					<option th:selected="(${SMTP_SECURED} == 'false')" value="false">False</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="siteName">From E-mail Address: </label> <input
+					name="MAIL_FROM" th:value="${MAIL_FROM}" type="text"
+					class="form-control" minlength="2" maxlength="45"
+					required="required">
+			</div>
+			<div class="form-group">
+				<label for="siteName">Sender Name: </label> <input name="MAIL_SENDER_NAME"
+					th:value="${MAIL_SENDER_NAME}" type="text" class="form-control"
+					minlength="2" maxlength="45" required="required">
+			</div>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

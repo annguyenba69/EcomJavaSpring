@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Login')"></head>
+<link rel="stylesheet" th:href="@{/assets/css/skins/skin-demo-13.css}">
+<link rel="stylesheet" th:href="@{/assets/css/demos/demo-13.css}">
+<!-- default styles -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme CSS files as mentioned below (and change the theme property of the plugin) -->
+<link
+	href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<!-- important mandatory libraries -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js"
+	type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+<!-- optionally if you need translation for your language then include locale file as mentioned below (replace LANG.js with your own locale file) -->
+<script
+	src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/locales/LANG.js"></script>
+<body>
+
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<main class="main">
+			<div th:replace="breadcrumb :: breadcrumb"></div>
+
+
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-9 col-xl-4-5col">
+
+
+						<!-- End .mb-3 mb-lg-5 -->
+						<div class="toolbox">
+							<div class="toolbox-left">
+								<div class="toolbox-info">[[${totalElements}]] Products
+									found</div>
+								<!-- End .toolbox-info -->
+							</div>
+							<!-- End .toolbox-left -->
+
+							<form id="form-sort" class="toolbox-right"
+								th:action="@{'/c/' + ${alias} + '/1'}" method="get"
+								onsubmit="return false">
+								<div class="toolbox-sort">
+									<label for="sortby">Sort by:</label>
+									<div class="select-custom">
+										<select name="sortField" id="sortField" class="form-control">
+											<option th:selected="${sortField == 'id'}" value="id">New</option>
+											<option th:selected="${sortField == 'name'}" value="name">Name</option>
+											<option th:selected="${sortField == 'price'}" value="price">Price</option>
+										</select>
+
+									</div>
+									<div class="select-custom ml-2">
+										<select name="sortDir" id="sortDir" class="form-control">
+											<option th:selected="${sortDir == 'asc'}" value="asc"
+												selected="selected">Ascending</option>
+											<option th:selected="${sortDir == 'desc'}" value="desc">Descending</option>
+										</select>
+									</div>
+									<input id="btn-form-sort" type="submit" value="search"
+										class="btn btn-sm btn-primary ml-2" />
+								</div>
+								<!-- End .toolbox-sort -->
+							</form>
+							<!-- End .toolbox-right -->
+						</div>
+						<!-- End .toolbox -->
+
+						<div class="products mb-3">
+							<div class="row">
+
+								<th:block th:each="product : ${products}">
+									<div class="col-6 col-md-4 col-xl-3">
+										<div class="product">
+											<figure class="product-media">
+												<th:block th:if="${product.isSale}">
+													<span class="product-label label-sale">Sale</span>
+												</th:block>
+												<a th:href="@{${product.URL}}"> <img
+													th:src="@{'/' + ${product.getMainImagePath}}"
+													alt="Product image" class="product-image"
+													style="width: 218px; height: 220px">
+												</a>
+
+
+											</figure>
+											<!-- End .product-media -->
+
+											<div class="product-body">
+												<div class="product-cat">
+													<a th:href="@{${product.category.URL}}">[[${product.category.name}]]</a>
+												</div>
+												<!-- End .product-cat -->
+												<h3 class="product-title">
+													<a th:href="@{${product.URL}}">[[${product.shortName}]]</a>
+												</h3>
+												<!-- End .product-title -->
+												<div class="product-price">
+													<th:block th:unless="${product.isSale}">
+														<span
+															th:replace="format :: format_currency(${product.price})"></span>
+													</th:block>
+													<th:block th:if="${product.isSale}">
+														<div class="new-price ml-1"
+															th:replace="format :: format_currency(${product.discountPrice})"></div>
+													&nbsp
+													<div style="text-decoration: line-through;"
+															th:replace="format :: format_currency_discount(${product.price})"></div>
+													</th:block>
+												</div>
+												<!-- End .product-price -->
+												<div class="ratings-container">
+													<div class="">
+
+														<!-- <input id="input-id" value="4" type="text" class="rating" data-size="lg" > -->
+														<input id="input-id" type="text" class="rating"
+															data-size="sm" th:value="${product.getAvgRatingReview}"
+															disabled="disabled">
+														<!-- End .ratings-val -->
+													</div>
+													<!-- End .ratings -->
+
+												</div>
+												<a class="ratings-text" href="#product-review-link"
+													id="review-link">([[${product.getTotalReview}]])
+													Reviews</a>
+											</div>
+											<!-- End .product-body -->
+										</div>
+										<!-- End .product -->
+									</div>
+								</th:block>
+
+
+								<div class="col-12 justify-content-center">
+									<div
+										th:replace="navigation :: paging_with_filter('c/' + ${alias}, 'product')"></div>
+								</div>
+
+
+								<div class="row">
+									<div class="col-12">
+										<h2 class="title text-center mb-4 mt-5">Explore By Categories</h2>
+									</div>
+									<th:block th:each="subCategory : ${listChildrenCategories}">
+										<div class="col-6 col-md-3 col-lg-2">
+											<a th:href="@{'/c/' + ${subCategory.alias}}"
+												class="cat-block">
+												<figure>
+													<span> <img
+														th:src="@{${subCategory.photoImagesPath}}"
+														alt="Category image" style="width: 120px">
+													</span>
+												</figure>
+
+												<h3 class="cat-block-title">Desktop Computers</h3> <!-- End .cat-block-title -->
+											</a>
+										</div>
+									</th:block>
+								</div>
+
+								<!-- End .col-sm-6 col-md-4 col-xl-3 -->
+							</div>
+							<!-- End .row -->
+						</div>
+
+
+
+					</div>
+					<!-- End .col-lg-9 -->
+
+					<div class="cat-blocks-container">
+
+						<!-- End .row -->
+					</div>
+					<!-- End .cat-blocks-container -->
+
+					<div class="mb-2"></div>
+					<!-- End .mb-2 -->
+
+					<div class="mb-4"></div>
+					<!-- End .mb-4 -->
+
+
+					<aside class="col-lg-3 col-xl-5col order-lg-first">
+						<div class="sidebar sidebar-shop">
+							<th:block th:if="${parentOfSubCategory != null}">
+								<div class="widget widget-categories">
+									<h3 class="widget-title">[[${parentOfSubCategory.name}]]</h3>
+									<!-- End .widget-title -->
+
+									<div class="widget-body">
+										<div class="accordion" id="widget-cat-acc">
+
+											<th:block
+												th:each="subCategory : ${parentOfSubCategory.children}">
+												<div class="acc-item">
+													<h5>
+														<a role="button" th:href="@{${subCategory.alias}}" class="collapsed">[[${subCategory.name}]]</a>
+														<style>
+.widget-categories h5 a.collapsed:before {
+	content: none;
+	transform: none;
+}
+</style>
+													</h5>
+												</div>
+											</th:block>
+
+
+											<!-- End .acc-item -->
+										</div>
+										<!-- End .accordion -->
+									</div>
+									<!-- End .widget-body -->
+								</div>
+							</th:block>
+							<!-- End .widget -->
+							<form id="formFilter" th:action="@{'/c/' + ${alias} + '/1'}"
+								method="get" onsubmit="return false">
+								<input type="hidden" name="sortField" value="id" /> <input
+									type="hidden" name="sortDir" value="asc" />
+								<div class="widget">
+									<h3 class="widget-title">Brands</h3>
+									<!-- End .widget-title -->
+
+									<div class="widget-body">
+										<div class="filter-items">
+											<th:block th:each="brand : ${listBrandsByCategory}">
+												<div class="filter-item">
+													<div class="custom-control custom-checkbox">
+														<th:block th:if="${integerSelectedBrand != null}">
+															<input
+																th:checked="${#lists.contains(integerSelectedBrand, brand.id)}"
+																type="checkbox" name="brand[]" th:value="${brand.id}"
+																class="custom-control-input"
+																th:id="'brand' + ${brand.id}">
+															<label class="custom-control-label"
+																th:for="'brand' + ${brand.id}">[[${brand.name}]]</label>
+														</th:block>
+														<th:block
+															th:if="${integerSelectedBrand == null || integerSelectedBrand.isEmpty()}">
+															<input type="checkbox" name="brand[]"
+																th:value="${brand.id}" class="custom-control-input"
+																th:id="'brand' + ${brand.id}">
+															<label class="custom-control-label"
+																th:for="'brand' + ${brand.id}">[[${brand.name}]]</label>
+														</th:block>
+													</div>
+													<!-- End .custom-checkbox -->
+												</div>
+												<!-- End .filter-item -->
+											</th:block>
+
+
+										</div>
+										<!-- End .filter-items -->
+									</div>
+									<!-- End .widget-body -->
+								</div>
+								<!-- End .widget -->
+
+								<div class="widget">
+									<h3 class="widget-title">Price</h3>
+									<!-- End .widget-title -->
+
+									<div class="widget-body">
+										<div class="filter-items">
+											<div class="filter-item">
+												<div class="custom-control custom-radio">
+													<input th:checked="${filterPrice == 1}" type="radio"
+														value="1" class="custom-control-input" id="price-1"
+														name="filter-price"> <label
+														class="custom-control-label" for="price-1">Under
+														$100</label>
+												</div>
+												<!-- End .custom-checkbox -->
+											</div>
+											<!-- End .filter-item -->
+
+											<div class="filter-item">
+												<div class="custom-control custom-radio">
+													<input th:checked="${filterPrice == 2}" type="radio"
+														value="2" class="custom-control-input" id="price-2"
+														name="filter-price"> <label
+														class="custom-control-label" for="price-2">$100 to
+														$200</label>
+												</div>
+												<!-- End .custom-checkbox -->
+											</div>
+											<!-- End .filter-item -->
+
+											<div class="filter-item">
+												<div class="custom-control custom-radio">
+													<input th:checked="${filterPrice == 3}" type="radio"
+														value="3" class="custom-control-input" id="price-3"
+														name="filter-price"> <label
+														class="custom-control-label" for="price-3">$200 to
+														$500</label>
+												</div>
+												<!-- End .custom-checkbox -->
+											</div>
+											<!-- End .filter-item -->
+
+											<div class="filter-item">
+												<div class="custom-control custom-radio">
+													<input th:checked="${filterPrice == 4}" type="radio"
+														value="4" class="custom-control-input" id="price-5"
+														name="filter-price"> <label
+														class="custom-control-label" for="price-5">$500
+														&amp; Above</label>
+												</div>
+												<!-- End .custom-checkbox -->
+											</div>
+											<!-- End .filter-item -->
+										</div>
+										<!-- End .filter-items -->
+									</div>
+									<!-- End .widget-body -->
+									<div>
+										<input id="filter" type="submit" value="Filter"
+											class="btn btn-outline-success btn-sm" />
+									</div>
+									<div>
+										<input id="clear" type="submit" value="Clear"
+											class="btn btn-outline-danger btm-sm mt-1" />
+									</div>
+								</div>
+
+							</form>
+							<div class="widget widget-banner-sidebar">
+								<div class="banner-sidebar-title">ad banner 218 x 430px</div>
+								<!-- End .ad-title -->
+
+								<div class="banner-sidebar banner-overlay">
+									<a href="#"> <img
+										th:src="@{/assets/images/demos/demo-13/banners/banner-6.jpg}"
+										alt="banner">
+									</a>
+								</div>
+								<!-- End .banner-ad -->
+							</div>
+							<!-- End .widget -->
+						</div>
+						<!-- End .sidebar sidebar-shop -->
+					</aside>
+					<!-- End .col-lg-3 -->
+				</div>
+			</div>
+		</main>
+		<div th:replace="modal :: modal"></div>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+	<script>
+		$(document).ready(function(){
+			$("#filter").on("click", function(){
+				filterPrice =  $("input[name='filter-price']:checked").val();
+				var name=document.getElementsByName('brand[]');
+				 var str="";
+			    for(i=0;i<(name.length);i++){
+			      if(name[i].checked){
+			         str+=name[i].value+",";
+			      }
+			    }
+			    sortField = $("#sortField option:selected").val();
+				sortDir = $("#sortDir option:selected").val();
+			    if(str.length>0){str=str.substring(0,str.length-1)};// remove the last comma
+			    var url = "[[@{/}]]" + 'c/' + "[[${alias}]]" + "/1" + "?sortField=" + sortField + "&sortDir=" + sortDir;
+				if(filterPrice == null && str.length > 0){
+					url = url + "&brand=" + str;
+				}else if(filterPrice != null && str.length ==0){
+					url = url + "&filterPrice=" + filterPrice;
+				}else if(filterPrice != null && str.length >0){
+					url = url + "&brand=" + str + "&filterPrice=" + filterPrice;
+				}else {
+					showModal("Waring", "You need to select the required filter conditions on your left sidebar");
+					return false;
+				}
+				
+			    window.location = url;
+			});
+			
+			$("#btn-form-sort").on("click", function(){
+				sortField = $("#sortField option:selected").val();
+				sortDir = $("#sortDir option:selected").val();
+				brand = "[[${brand}]]";
+				filterPrice = "[[${filterPrice}]]";
+				urlSort = "[[@{/}]]" + 'c/' + "[[${alias}]]" + "/1" + "?sortField=" + sortField + "&sortDir=" + sortDir;
+				if(brand != null || brand !="" && filterPrice != null || filterPrice != ""){
+					urlSort = urlSort + "&brand=" + brand + "&filterPrice=" + filterPrice;
+				}else if(brand != null || brand != ""){
+					urlSort = urlSort + "&brand=" + brand;
+				}else if(filterPrice != null || filterPrice != ""){
+					urlSort = urlSort + "&filterPrice=" + filterPrice;
+				}
+				window.location = urlSort;
+				
+			})
+			
+			$("#clear").on("click", function(){
+				urlClear = "[[@{/}]]" + 'c/' + "[[${alias}]]";
+				window.location = urlClear;
+			})
+		})
+		function showModal(title, message){
+			$(".modal-title").text(title);
+			$(".modal-body").text(message);
+			$("#modal-dialog").modal();
+		}
+	</script>
+</body>
+</html>

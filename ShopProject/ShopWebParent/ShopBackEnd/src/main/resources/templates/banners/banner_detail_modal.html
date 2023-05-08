@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info Banner</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<label for="name">Title</label> <input th:value="${banner.title}"
+			type="text" class="form-control" 
+			readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="name">Link</label> <input th:value="${banner.link}"
+			type="text" class="form-control" 
+			readonly="readonly">
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Image:</label>
+		<div class="col-sm-8">
+			<img class="img-fluid" id="thumbnail" th:src="@{${banner.imagePath}}"
+				alt="Photos Preview" style="max-width: 150px" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Enabled</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<input th:checked="${banner.enabled}" class="m-2" type="checkbox" disabled="disabled">
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Detail')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<main class="main">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
+				<div class="container">
+					<h1 class="page-title">
+						Article Listing<span>Article</span>
+					</h1>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .page-header -->
+			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+						<li class="breadcrumb-item"><a>Articles</a></li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="page-content">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+							<th:block th:each="article : ${articles}">
+								<article class="entry entry-list">
+									<div class="row align-items-center">
+										<div class="col-md-5">
+											<figure class="entry-media">
+												<a th:href="@{${article.URL}}"> <img
+													th:src="@{${article.imagePath}}" alt="image desc">
+												</a>
+											</figure>
+											<!-- End .entry-media -->
+										</div>
+										<!-- End .col-md-5 -->
+
+										<div class="col-md-7">
+											<div class="entry-body">
+												<div class="entry-meta">
+													<span class="entry-author"> by <a>[[${article.user.fullName}]]</a>
+													</span> <span class="meta-separator">|</span> <a
+														th:text="${#dates.format(article.createdTime, 'dd-MMM-yyyy')}"></a>
+												</div>
+												<!-- End .entry-meta -->
+
+												<h2 class="entry-title">
+													<a th:href="@{${article.URL}}">[[${article.title}]]</a>
+												</h2>
+												<!-- End .entry-title -->
+
+												<div class="entry-cats">
+													in <a th:href="@{${article.topic.URL}}">[[${article.topic.name}]]</a>
+												</div>
+												<!-- End .entry-cats -->
+
+												<div class="entry-content">
+													<p th:utext="${article.intro}"></p>
+													<a th:href="@{${article.URL}}" class="read-more">Continue
+														Reading</a>
+												</div>
+												<!-- End .entry-content -->
+											</div>
+											<!-- End .entry-body -->
+										</div>
+										<!-- End .col-md-7 -->
+									</div>
+									<!-- End .row -->
+								</article>
+							</th:block>
+
+							<div
+								th:replace="navigation :: paging_no_sort('articles', 'articles')"></div>
+						</div>
+						<!-- End .col-lg-9 -->
+
+						<aside class="col-lg-3">
+							<div class="sidebar">
+								<div class="widget widget-search">
+									<h3 class="widget-title">Search</h3>
+									<!-- End .widget-title -->
+
+									<form action="#">
+										<label for="ws" class="sr-only">Search in blog</label> <input
+											type="search" class="form-control" name="ws" id="ws"
+											placeholder="Search in blog" required="">
+										<button type="submit" class="btn">
+											<i class="icon-search"></i><span class="sr-only">Search</span>
+										</button>
+									</form>
+								</div>
+								<!-- End .widget -->
+								<div class="widget widget-cats">
+									<h3 class="widget-title">Categories</h3>
+									<ul>
+										<th:block th:each="topic : ${topics}">
+											<li><a href="#">[[${topic.name}]]<span>[[${topic.articles.size}]]</span></a></li>
+										</th:block>
+
+									</ul>
+								</div>
+
+								
+
+								
+
+
+
+								<div class="widget widget-text">
+									<h3 class="widget-title">About Blog</h3>
+									<!-- End .widget-title -->
+
+									<div class="widget-text-content">
+										<p>Vestibulum volutpat, lacus a ultrices sagittis, mi
+											neque euismod dui, pulvinar nunc sapien ornare nisl.</p>
+									</div>
+									<!-- End .widget-text-content -->
+								</div>
+								<!-- End .widget -->
+							</div>
+							<!-- End .sidebar -->
+						</aside>
+						<!-- End .col-lg-3 -->
+					</div>
+					<!-- End .row -->
+				</div>
+				<!-- End .container -->
+			</div>
+		</main>
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+</body>
+</html>

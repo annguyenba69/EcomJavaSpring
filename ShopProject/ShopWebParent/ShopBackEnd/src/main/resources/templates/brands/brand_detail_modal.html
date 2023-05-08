@@ -1,0 +1,31 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info Category</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<label for="name">Name</label> <input th:value="${brand.name}" type="text"
+			class="form-control" minlength="1" maxlength="128"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Logo:</label>
+		<div class="col-sm-8">
+			<img class="img-fluid"
+				id="thumbnail" th:src="@{${brand.logoPath}}" alt="Photos Preview"
+				style="max-width: 150px" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Categories:</label>
+		<div class="col-sm-8">
+				<span th:each="category : ${brand.categories}" class="badge badge-primary mr-1">[[${category.name}]]</span>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

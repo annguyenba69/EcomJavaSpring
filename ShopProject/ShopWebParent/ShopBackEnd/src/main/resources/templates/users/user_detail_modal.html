@@ -1,0 +1,48 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info User</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<label for="email">Email address</label> <input th:value="${user.email}"
+			type="email" class="form-control" minlength="3" maxlength="128"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="firstName">First name</label> <input
+			th:value="${user.firstName}" type="text" class="form-control"
+			minlength="2" maxlength="45" required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="lastName">Last name</label> <input th:value="${user.lastName}"
+			type="text" class="form-control" minlength="2" maxlength="45"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Roles</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<span th:each="role : ${user.roles}" class="badge badge-primary mr-1">[[${role.name}]]</span>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Enabled</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<input th:checked="${user.enabled}" class="m-2" type="checkbox"
+				disabled="disabled">
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Photos:</label>
+		<div class="col-sm-8">
+			<img class="img-fluid" id="thumbnail"
+				th:src="@{${user.photoImagesPath}}" alt="Photos Preview"
+				style="max-width: 150px" />
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

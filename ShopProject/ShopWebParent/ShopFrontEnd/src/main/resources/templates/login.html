@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Login')"></head>
+<body>
+
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+
+		<div class="modal-content mb-4">
+			<div class="modal-body">
+				<div class="form-box mt-2">
+					<div class="form-tab">
+						<ul class="nav nav-pills nav-fill" role="tablist">
+							<li class="nav-item"><a class="nav-link active"
+								id="signin-tab" data-toggle="tab" href="#signin" role="tab"
+								aria-controls="signin" aria-selected="true">Sign In</a></li>
+						</ul>
+						<div class="tab-content" id="tab-content-5">
+							<div class="tab-pane fade active show" id="signin"
+								role="tabpanel" aria-labelledby="signin-tab">
+								<form th:action="@{login}" method="post">
+									<div th:if="${param.error}">
+										<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+									</div>
+									<div class="form-group">
+										<label for="singin-email">Username or email address *</label>
+										<input type="email" class="form-control" name="email"
+											required="">
+									</div>
+									<!-- End .form-group -->
+
+									<div class="form-group">
+										<label for="singin-password">Password *</label> <input
+											type="password" class="form-control" name="password"
+											required="">
+									</div>
+									<!-- End .form-group -->
+
+									<div class="form-footer">
+										<button type="submit" class="btn btn-outline-primary-2">
+											<span>LOG IN</span> <i class="icon-long-arrow-right"></i>
+										</button>
+
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" name="remember-me"
+												class="custom-control-input" id="signin-remember"> <label
+												class="custom-control-label" for="signin-remember">Remember
+												Me</label>
+										</div>
+										<!-- End .custom-checkbox -->
+										<a th:href="@{/register}" class="forgot-link">Register</a>
+										<a th:href="@{/forgot_password}" class="forgot-link">Forgot Your Password?</a>
+									</div>
+									<!-- End .form-footer -->
+								</form>
+								<div class="form-choice">
+									<p class="text-center">or sign in with</p>
+									<div class="row">
+										<div class="col-sm-6">
+											<a href="#" class="btn btn-login btn-g"> <i
+												class="icon-google"></i> Login With Google
+											</a>
+										</div>
+										<!-- End .col-6 -->
+										<div class="col-sm-6">
+											<a href="#" class="btn btn-login btn-f"> <i
+												class="icon-facebook-f"></i> Login With Facebook
+											</a>
+										</div>
+										<!-- End .col-6 -->
+									</div>
+									<!-- End .row -->
+								</div>
+								<!-- End .form-choice -->
+							</div>
+							<!-- .End .tab-pane -->
+						</div>
+						<!-- End .tab-content -->
+					</div>
+					<!-- End .form-tab -->
+				</div>
+				<!-- End .form-box -->
+			</div>
+			<!-- End .modal-body -->
+		</div>
+
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+</body>
+</html>

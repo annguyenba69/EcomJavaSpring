@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('products')"></head>
+<meta th:name="_csrf" th:content="${_csrf.token}" />
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/richtext/richtext.min.css}">
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Setting Form</h5>
+								<div th:replace="fragments :: message"></div>
+								<div class="card-body">
+									<nav>
+										<div class="nav nav-tabs" id="nav-tab" role="tablist">
+											<button class="nav-link active" id="nav-home-tab"
+												data-toggle="tab" data-target="#general" type="button"
+												role="tab" aria-controls="nav-home" aria-selected="true">General</button>
+											<button class="nav-link" id="nav-profile-tab"
+												data-toggle="tab" data-target="#countries" type="button"
+												role="tab" aria-controls="nav-profile" aria-selected="false">Countries</button>
+											<button class="nav-link" id="nav-contact-tab"
+												data-toggle="tab" data-target="#states" type="button"
+												role="tab" aria-controls="nav-contact" aria-selected="false">States</button>
+											<button class="nav-link" id="nav-contact-tab"
+												data-toggle="tab" data-target="#mailserver" type="button"
+												role="tab" aria-controls="nav-contact" aria-selected="false">Mail
+												Server</button>
+											<button class="nav-link" id="nav-contact-tab"
+												data-toggle="tab" data-target="#mailtemplate" type="button"
+												role="tab" aria-controls="nav-contact" aria-selected="false">Mail
+												Template</button>
+											<button class="nav-link" id="nav-contact-tab"
+												data-toggle="tab" data-target="#payment" type="button"
+												role="tab" aria-controls="nav-contact" aria-selected="false">Payment</button>
+										</div>
+									</nav>
+									<div class="tab-content" id="nav-tabContent">
+										<div class="tab-pane fade show active" id="general"
+											role="tabpanel" aria-labelledby="nav-home-tab">
+											<div th:replace="settings/setting_general :: general"></div>
+										</div>
+										<div class="tab-pane fade" id="countries" role="tabpanel"
+											aria-labelledby="nav-profile-tab">
+											<div th:replace="settings/setting_country :: country"></div>
+										</div>
+										<div class="tab-pane fade" id="states" role="tabpanel"
+											aria-labelledby="nav-contact-tab">
+											<div th:replace="settings/setting_state :: state"></div>
+										</div>
+										<div class="tab-pane fade" id="mailserver" role="tabpanel"
+											aria-labelledby="nav-contact-tab">
+											<div th:replace="settings/setting_mail_server :: mail_server"></div>
+										</div>
+										<div class="tab-pane fade" id="mailtemplate" role="tabpanel"
+											aria-labelledby="nav-contact-tab">
+											<div th:replace="settings/setting_mail_template :: template"></div>
+										</div>
+										<div class="tab-pane fade" id="payment" role="tabpanel"
+											aria-labelledby="nav-contact-tab">f</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="modal :: modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	MAX_FILE_SIZE = 921600;
+	contextPath = "[[@{/}]]";
+	var token = $("meta[name='_csrf']").attr("content"); 
+	var header = $("meta[name='_csrf_header']").attr("content");
+	</script>
+	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+	<script th:src="@{/js/common_form.js}"></script>
+	<script th:src="@{/js/setting_country.js}"></script>
+	<script th:src="@{/js/setting_state.js}"></script>
+	<script type="text/javascript">
+			$("#email-content").richText();
+	</script>
+</body>
+</html>

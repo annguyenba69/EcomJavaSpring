@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<typeInfoHistroy>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{Customer.java[Customer" modifiers="1" timestamp="1682503268731"/>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{Product.java[Product" modifiers="1" timestamp="1682503234648"/>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{Menu.java[Menu" modifiers="1" timestamp="1682603061622"/>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{MenuType.java[MenuType" modifiers="16385" timestamp="1682589135859"/>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{Setting.java[Setting" modifiers="1" timestamp="1682913260869"/>
+    <typeInfo handle="=ShopFrontEnd/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.order{OrderService.java[OrderService" modifiers="1" timestamp="1683558297496"/>
+    <typeInfo handle="=ShopFrontEnd/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.shippingrate{ShippingRateService.java[ShippingRateService" modifiers="1" timestamp="1681795954138"/>
+    <typeInfo handle="=ShopFrontEnd/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.checkout{CheckoutService.java[CheckoutService" modifiers="1" timestamp="1681799389516"/>
+    <typeInfo handle="=ShopFrontEnd/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.address{AddressService.java[AddressService" modifiers="1" timestamp="1681749134492"/>
+    <typeInfo handle="=ShopCommon/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.common.entity{ShippingRate.java[ShippingRate" modifiers="1" timestamp="1680625598518"/>
+    <typeInfo handle="=ShopFrontEnd/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.shop.admin.shoppingcart{ShoppingCartService.java[ShoppingCartService" modifiers="1" timestamp="1682220898474"/>
+</typeInfoHistroy>

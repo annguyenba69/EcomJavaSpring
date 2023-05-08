@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="overview">
+		<div class="form-group">
+			<label for="name">Product name</label> <input th:value="${product.name}"
+				type="text" class="form-control" minlength="2" maxlength="256"
+				required="required" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="alias">Alias</label> <input th:value="${product.alias}" placeholder="Default is product name (spaces are replaced by dashes)"
+				type="text" class="form-control" minlength="2" maxlength="256"
+				 readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="">Brand</label>
+			<span class="badge badge-primary">[[${product.brand.name}]]</span>
+		</div>
+		<div class="form-group">
+			<label for="">Category</label> 
+			<span class="badge badge-primary">[[${product.category.name}]]</span>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">Enabled</label>
+			<div class="col-sm-8" style="padding-top: 7px">
+				<input th:checked="${product.enabled}" class="m-2" type="checkbox" disabled="disabled">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-4 col-form-label">In-Stock</label>
+			<div class="col-sm-8" style="padding-top: 7px">
+				<input th:checked="${product.inStock}" class="m-2" type="checkbox" disabled="disabled">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="cost">Cost</label> 
+			<input th:value="${product.cost}" type="number" class="form-control" step="0.1" required="required" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="cost">Price</label> 
+			<input th:value="${product.price}" type="number" class="form-control" step="0.1" required="required" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="cost">Discount</label> 
+			<input th:value="${product.discountPercent}" type="number" class="form-control" step="0.1" required="required" readonly="readonly">
+		</div>
+	</div>
+</body>
+</html>

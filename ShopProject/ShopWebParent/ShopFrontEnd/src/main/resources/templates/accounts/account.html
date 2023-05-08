@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragment :: page_head('Account')"></head>
+<body>
+	<div class="page-wrapper">
+		<div th:replace="fragment :: header"></div>
+		<main class="main">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
+				<div class="container">
+					<h1 class="page-title">
+						My Account<span>Shop</span>
+					</h1>
+				</div>
+				<!-- End .container -->
+			</div>
+			<!-- End .page-header -->
+			<nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+				<div class="container">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">My
+							Account</li>
+					</ol>
+				</div>
+				<!-- End .container -->
+			</nav>
+			<!-- End .breadcrumb-nav -->
+
+			<div class="page-content">
+				<div class="dashboard">
+					<div class="container">
+						<div class="row">
+							<aside class="col-md-4 col-lg-3">
+								<ul class="nav nav-dashboard flex-column mb-3 mb-md-0"
+									role="tablist">
+									<li class="nav-item"><a class="nav-link active"
+										id="tab-dashboard-link" data-toggle="tab"
+										href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
+										aria-selected="true">Dashboard</a></li>
+
+									<li class="nav-item"><a class="nav-link"
+										id="tab-downloads-link" data-toggle="tab"
+										href="#tab-downloads" role="tab" aria-controls="tab-downloads"
+										aria-selected="false">Downloads</a></li>
+									<li class="nav-item"><a class="nav-link"
+										id="tab-address-link" data-toggle="tab" href="#tab-address"
+										role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+									</li>
+									<li class="nav-item"><a class="nav-link"
+										id="tab-account-link" data-toggle="tab" href="#tab-account"
+										role="tab" aria-controls="tab-account" aria-selected="false">Account
+											Details</a></li>
+									<li class="nav-item">
+										<form th:action="@{logout}" method="post">
+											<input style="background: none;border: none;" type="submit" class="nav-link" value="Sign out" />
+										</form>
+									</li>
+								</ul>
+							</aside>
+							<!-- End .col-lg-3 -->
+
+							<div class="col-md-8 col-lg-9">
+								<div class="tab-content">
+									<div class="tab-pane fade active show" id="tab-dashboard"
+										role="tabpanel" aria-labelledby="tab-dashboard-link">
+										<p>
+											Hello <span class="font-weight-normal text-dark"
+												sec:authentication="principal.fullName">User</span> (not <span
+												class="font-weight-normal text-dark">User</span>? <a
+												href="#">Log out</a>) <br> From your account dashboard
+											you can view your recent orders,
+											manage your <a href="#tab-address" class="tab-trigger-link">shipping
+												and billing addresses</a>, and <a href="#tab-account"
+												class="tab-trigger-link">edit your password and account
+												details</a>.
+										</p>
+										<table class="table table-sm">
+											<thead class="thead-dark">
+												<tr>
+													<th
+														th:replace="fragment :: column_link('account', 'total', 'Total')"></th>
+													<th
+														th:replace="fragment :: column_link('account', 'orderTime', 'Order Time')"></th>
+													<th>Destination</th>
+													<th
+														th:replace="fragment :: column_link('account', 'status', 'Status')"></th>
+													<th scope="col">Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="order : ${orders}">
+													<td><span
+														th:replace="format :: format_currency(${order.total})"></span></td>
+													<td
+														th:text="${#dates.format(order.orderTime, 'dd-MM-yyyy')}"></td>
+													<td>[[${order.destination}]]</td>
+													<td>[[${order.status}]]</td>
+													<td>
+														
+													<a
+														class="link-detail"
+														th:href="@{'/account/order/detail/' + ${order.id}}">
+															<i class="fa-solid fa-circle-info fa-2xl"></i>
+														</a>
+														<a
+														class=""
+														th:orderId="${order.id}"
+														th:href="@{'/account/order/delete/' + ${order.id}}">
+															<i class="fa-solid fa-trash fa-2xl"></i>
+														</a></td>
+												</tr>
+											</tbody>
+										</table>
+
+										<div
+											th:replace="navigation :: paging_no_sort('account', 'orders')"></div>
+
+										<th:block th:if="${orders == null}">
+											<p>No order has been made yet.</p>
+											<a href="category.html" class="btn btn-outline-primary-2"><span>GO
+													SHOP</span><i class="icon-long-arrow-right"></i></a>
+										</th:block>
+									</div>
+									<!-- .End .tab-pane -->
+
+
+									<!-- .End .tab-pane -->
+
+									<div class="tab-pane fade" id="tab-downloads" role="tabpanel"
+										aria-labelledby="tab-downloads-link">
+										<p>No downloads available yet.</p>
+										<a href="category.html" class="btn btn-outline-primary-2"><span>GO
+												SHOP</span><i class="icon-long-arrow-right"></i></a>
+									</div>
+
+									<div class="tab-pane fade" id="tab-address" role="tabpanel"
+										aria-labelledby="tab-address-link">
+										<p>The following addresses will be used on the checkout
+											page by default.</p>
+										<a th:href="@{/account/add_new_address}"
+											class="btn btn-outline-success">Add New Address</a>
+										<div class="row mt-3">
+
+											<div class="col-lg-6">
+												<div class="card card-dashboard"
+													th:classappend="${usePrimaryAddressAsDefault ? 'bg-warning' : ''}">
+													<div class="card-body">
+														<h3 class="card-title">Billing Address</h3>
+														<th:block th:if="${usePrimaryAddressAsDefault}">
+															<span class="text-danger">Default</span>
+														</th:block>
+														<th:block th:unless="${usePrimaryAddressAsDefault}">
+														[<a href="">Set Default</a>]
+														</th:block>
+														<p>[[${customer.address}]]</p>
+													</div>
+													<!-- End .card-body -->
+												</div>
+												<!-- End .card-dashboard -->
+											</div>
+											<!-- End .col-lg-6 -->
+											<th:block th:each="address : ${listAddresses}">
+												<div class="col-lg-6">
+													<div class="card card-dashboard"
+														th:classappend="${address.defaultForShipping ? 'bg-warning' : ''}">
+														<div class="card-body">
+															<h3 class="card-title">Billing Address</h3>
+															<th:block th:if="${address.defaultForShipping}">
+																<span class="text-danger">Default</span>
+															</th:block>
+															<th:block th:unless="${address.defaultForShipping}">
+														[<a th:href="@{'/account/set_address_default/' + ${address.id}}">Set Default</a>]
+														</th:block>
+															<p>[[${address}]]</p>
+														</div>
+														<!-- End .card-body -->
+													</div>
+													<!-- End .card-dashboard -->
+												</div>
+											</th:block>
+											<!-- End .col-lg-6 -->
+										</div>
+										<!-- End .row -->
+									</div>
+									<!-- .End .tab-pane -->
+
+									<div class="tab-pane fade" id="tab-account" role="tabpanel"
+										aria-labelledby="tab-account-link">
+										<form th:action="@{/account/save_account}"
+											th:object="${customer}" method="post">
+											<input type="hidden" name="id" th:field="*{id}" /> <input
+												type="hidden" th:field="*{enabled}" />
+											<div class="row">
+												<div class="col-sm-6">
+													<label>First Name *</label> <input type="text"
+														class="form-control" required="" th:field="*{firstName}">
+												</div>
+												<!-- End .col-sm-6 -->
+
+												<div class="col-sm-6">
+													<label>Last Name *</label> <input type="text"
+														class="form-control" required="" th:field="*{lastName}">
+												</div>
+												<!-- End .col-sm-6 -->
+											</div>
+											<!-- End .row -->
+
+											<label>Email address *</label> <input type="email"
+												name="email" class="form-control" th:field="*{email}"
+												readonly="readonly"> <label>New password
+												(leave blank to leave unchanged)</label> <input type="password"
+												class="form-control"> <label for="phoneNumber">Phone
+												Number</label> <input type="text" class="form-control" minlength="2"
+												maxlength="15" required="required" id="phoneNumber"
+												name="phoneNumber" th:field="*{phoneNumber}"> <label
+												for="exampleFormControlSelect1">Country</label> <label
+												for="exampleFormControlSelect1">Country</label> <select
+												class="form-control" th:field="*{country}">
+												<th:block th:each="country : ${countries}">
+													<option th:value="${country.id}">[[${country.name}]]</option>
+												</th:block>
+											</select> <label for="exampleFormControlTextarea1">Address
+												Line 1</label>
+											<textarea class="form-control"
+												id="exampleFormControlTextarea1" rows="3" maxlength="64"
+												required="required" name="addressLine1"
+												th:field="*{addressLine1}"></textarea>
+
+											<label for="exampleFormControlTextarea1">Address Line
+												2</label>
+											<textarea class="form-control"
+												id="exampleFormControlTextarea1" rows="3" maxlength="64"
+												name="addressLine2" th:field="*{addressLine2}"></textarea>
+											<label for="">City</label> <input type="text"
+												class="form-control" minlength="2" maxlength="45"
+												required="required" id="city" name="city" th:field="*{city}">
+											<label for="">State</label> <input type="text"
+												class="form-control" minlength="2" maxlength="45" id="state"
+												name="state" th:field="*{state}"> <label for="">Postal
+												Code</label> <input type="text" class="form-control" minlength="2"
+												maxlength="10" required="required" id="postalCode"
+												name="postalCode" th:field="*{postalCode}">
+											<button type="submit" class="btn btn-outline-primary-2">
+												<span>SAVE CHANGES</span> <i class="icon-long-arrow-right"></i>
+											</button>
+										</form>
+									</div>
+									<!-- .End .tab-pane -->
+								</div>
+							</div>
+							<!-- End .col-lg-9 -->
+						</div>
+						<!-- End .row -->
+					</div>
+					<!-- End .container -->
+				</div>
+				<!-- End .dashboard -->
+			</div>
+			<!-- End .page-content -->
+		</main>
+
+		<div class="modal fade" id="detail-modal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+
+		<div th:replace="fragment :: footer"></div>
+	</div>
+	<div th:replace="fragment :: script"></div>
+	<script>
+	$(document).ready(function(){
+		$(".link-detail").on('click', function(e){
+			e.preventDefault();
+			linkDetail = $(this).attr("href");
+			$("#detail-modal").modal("show").find(".modal-content").load(linkDetail);
+		});
+	});
+	</script>
+</body>
+</html>

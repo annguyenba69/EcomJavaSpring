@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('questions')"></head>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/richtext/richtext.min.css}">
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Article Form</h5>
+								<div class="card-body">
+									<form th:action="@{/articles/save}" method="post"
+										th:object="${article}" enctype="multipart/form-data">
+										<input type="hidden" th:field="*{id}" /> <input type="hidden"
+											th:field="*{image}" /> <input type="hidden"
+											th:field="*{createdTime}" />
+										<div class="form-group">
+											<label for="">Title</label> <input th:field="*{title}"
+												type="text" class="form-control" minlength="3"
+												maxlength="256" required="required">
+										</div>
+										<div class="form-group">
+											<label for="">Alias</label> <input
+												placeholder="If leaved empty default alias will be same title"
+												th:field="*{alias}" type="text" class="form-control"
+												minlength="3" maxlength="256">
+										</div>
+
+										<div class="form-group">
+											<label for="">Content</label>
+											<textarea class="form-control" id="articleContent"
+												th:field="*{content}" rows="3"></textarea>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Image:</label>
+											<div class="col-sm-8">
+												<input class="mb-2" name="fileImage" type="file"
+													id="fileImage" accept="image/png, image/jpeg" /> <img
+													class="img-fluid" id="thumbnail"
+													th:src="@{${article.imagePath}}" alt="Photos Preview"
+													style="max-width: 150px" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="exampleFormControlSelect1">Topic</label> <select
+												class="form-control" id="" th:field=*{topic}>
+												<th:block th:each="topic : ${topics}">
+													<option th:value="${topic.id}">[[${topic.name}]]</option>
+												</th:block>
+											</select>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Published</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{published}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+	<script type="text/javascript">
+		MAX_FILE_SIZE  = 1000000;
+		$(document).ready(function(){
+			$("#articleContent").richText();
+		})
+	</script>
+	<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

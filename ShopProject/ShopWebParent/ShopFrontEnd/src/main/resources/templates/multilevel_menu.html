@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<ul th:fragment="menu(parentCategory)" class="a">
+		<th:block th:each="subCategory : ${parentCategory.children}">
+			<li><a th:href="@{${subCategory.URL}}">[[${subCategory.name}]]</a>
+				<th:block th:if="${parentCategory.children != null && !parentCategory.children.empty()}">
+					<ul th:replace="multilevel_menu :: menu(${subCategory})"></ul>
+				</th:block>
+			</li>
+		</th:block>
+		
+	</ul>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('questions')"></head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Question Form</h5>
+								<div class="card-body">
+									<form th:action="@{/questions/save}" method="post"
+										th:object="${question}">
+										<input type="hidden" th:field="*{id}" />
+										<div class="form-group">
+											<label for="name">Product Name</label> <input
+												th:value="*{product.name}" type="text" class="form-control"
+												readonly="readonly">
+										</div>
+										<div class="form-group">
+											<label for="exampleFormControlTextarea1">Question</label>
+											<textarea class="form-control" id=""
+												th:field="*{questionContent}" rows="3"></textarea>
+										</div>
+										<p>
+											Asked By: <span style="font-weight: bold;">[[${question.asker.fullName}]]</span>
+											on [[${question.askTime}]]
+										</p>
+										<div class="form-group">
+											<label for="exampleFormControlTextarea1">Answer</label>
+											<textarea class="form-control" id="" th:value="*{answer}"
+												rows="3"></textarea>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Approved</label>
+											<div class="col-sm-8" style="padding-top: 7px">
+												<input th:field="*{approved}" class="m-2" type="checkbox">
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

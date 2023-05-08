@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="overview">
+		<div class="form-group">
+			<label for="">Order Id</label> <input th:field="*{id}" type="text"
+				class="form-control" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="">Customer</label> <input
+				th:value="${order.customer.fullName}" type="text"
+				class="form-control" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="">Cost</label>
+			<div th:replace="format :: currency_input(${order.productCost})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Sub Total</label>
+			<div th:replace="format :: currency_input(${order.subtotal})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Shipping Cost</label>
+			<div th:replace="format :: currency_input(${order.shippingCost})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Tax</label>
+			<div th:replace="format :: currency_input(${order.tax})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Total</label>
+			<div th:replace="format :: currency_input(${order.total})"></div>
+			<p>TOTAL = SUBTOTAL + SHIPPING COST + TAX</p>
+		</div>
+		<div class="form-group">
+			<label for="">Payment Method</label> <select th:field="*{paymentMethod}" class="form-control"
+				id="">
+				<option value="COD">COD</option>
+				<option value="CREDIT_CARD">CREDIT_CARD</option>
+				<option value="PAY_PAL">PAY_PAL</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="">Payment Status</label> <select th:field="*{status}" class="form-control"
+				id="">
+				<option value="NEW">NEW</option>
+				<option value="CANCELLED">CANCELLED</option>
+				<option value="PROCESSING">PROCESSING</option>
+				<option value="PACKAGED">PACKAGED</option>
+				<option value="PICKED">PICKED</option>
+				<option value="SHIPPING">SHIPPING</option>
+				<option value="DELIVERED">DELIVERED</option>
+				<option value="RETURNED">RETURNED</option>
+				<option value="PAID">PAID</option>
+				<option value="REFUNDED">REFUNDED</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="">Order Date</label>
+			<td th:text="${#dates.format(order.orderTime, 'dd-MM-yyyy')}"></td>
+		</div>
+	</div>
+</body>
+</html>

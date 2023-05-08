@@ -1,0 +1,99 @@
+package com.shop.order;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.shop.checkout.CheckoutInfo;
+import com.shop.common.entity.Address;
+import com.shop.common.entity.CartItem;
+import com.shop.common.entity.Customer;
+import com.shop.common.entity.Order;
+import com.shop.common.entity.OrderDetail;
+import com.shop.common.entity.OrderStatus;
+import com.shop.common.entity.OrderTrack;
+import com.shop.common.entity.PaymentMethod;
+import com.shop.common.entity.Product;
+
+@Service
+public class OrderService {
+	public static final int ORDERS_PER_PAGE = 3;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	public Page<Order> findByOrder(Integer pageNum, String sortDir, String sortField, Customer customer) {
+		Sort sort = Sort.by(sortField);
+		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+		Pageable pageable = PageRequest.of(pageNum - 1, ORDERS_PER_PAGE, sort);
+		return orderRepository.findByCustomer(customer, pageable);
+	}
+
+	public Order createOrder(Customer customer, Address address, List<CartItem> cartItems, PaymentMethod paymentMethod,
+			CheckoutInfo checkoutInfo) {
+		Order newOrder = new Order();
+		newOrder.setOrderTime(new Date());
+		if (paymentMethod.equals(PaymentMethod.PAYPAL)) {
+			newOrder.setStatus(OrderStatus.PAID);
+		} else {
+			newOrder.setStatus(OrderStatus.NEW);
+		}
+
+		newOrder.setCustomer(customer);
+		newOrder.setProductCost(checkoutInfo.getProductCost());
+		newOrder.setSubtotal(checkoutInfo.getProductTotal());
+		newOrder.setShippingCost(checkoutInfo.getShippingCostTotal());
+		newOrder.setTax(0.0f);
+		newOrder.setTotal(checkoutInfo.getPaymentTotal());
+		newOrder.setPaymentMethod(paymentMethod);
+		newOrder.setDeliverDays(checkoutInfo.getDeliverDays());
+		newOrder.setDeliverDate(checkoutInfo.getDeliverDate());
+
+		if (address == null) {
+			newOrder.copyAddressFromCustomer();
+		} else {
+			newOrder.copyShippingAddress(address);
+		}
+
+		Set<OrderDetail> orderDetails = new HashSet<>();
+		for (CartItem cartItem : cartItems) {
+			Product product = cartItem.getProduct();
+
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setOrder(newOrder);
+			orderDetail.setProduct(product);
+			orderDetail.setQuantity(cartItem.getQuantity());
+			orderDetail.setUnitPrice(product.getDiscountPrice());
+			orderDetail.setProductCost(product.getCost() * cartItem.getQuantity());
+			orderDetail.setSubTotal(cartItem.subTotal());
+			orderDetail.setShippingCost(cartItem.getShippingCost());
+
+			orderDetails.add(orderDetail);
+		}
+		newOrder.getOrderDetails().addAll(orderDetails);
+		OrderTrack track = new OrderTrack();
+		track.setNotes(OrderStatus.NEW.defaultDescription());
+		track.setUpdatedTime(new Date());
+		track.setOrder(newOrder);
+		track.setStatus(OrderStatus.NEW);
+		newOrder.getOrderTracks().add(track);
+		return orderRepository.save(newOrder);
+	}
+
+	public Order get(Integer id) throws OrderNotFoundException {
+		try {
+			return orderRepository.findById(id).get();
+		} catch (NoSuchElementException ex) {
+			throw new OrderNotFoundException("Could not found order with id: " + id);
+		}
+	}
+}

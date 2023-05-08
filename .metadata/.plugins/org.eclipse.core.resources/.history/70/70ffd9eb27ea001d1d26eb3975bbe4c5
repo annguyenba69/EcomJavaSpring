@@ -1,0 +1,88 @@
+package com.shop.customer;
+
+import java.util.Date;
+import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.shop.common.entity.AuthenticationType;
+import com.shop.common.entity.Customer;
+
+import jakarta.transaction.Transactional;
+import net.bytebuddy.utility.RandomString;
+
+@Service
+@Transactional
+public class CustomerService {
+
+	@Autowired private CustomerRepository customerRepository;
+	
+	@Autowired private PasswordEncoder passwordEncoder;
+	
+	public void registerCustomer(Customer customer) {
+		customer.setEnabled(false);
+		customer.setCreatedTime(new Date());
+		encodedPassword(customer);
+		customer.setAuthenticationType(AuthenticationType.DATABASE);
+		
+		String randomCode = RandomString.make(64);
+		customer.setVerificationCode(randomCode);
+		customerRepository.save(customer);
+	}
+	
+	public void save(Customer customer) {
+		boolean isUpdatingCustomer = (customer.getId() != null);
+		if(isUpdatingCustomer) {
+			Customer existingCustomer = customerRepository.findById(customer.getId()).get();
+			if(customer.getPassword() == null) {
+				customer.setPassword(existingCustomer.getPassword());
+			}else {
+				encodedPassword(customer);
+			}
+		}else {
+			encodedPassword(customer);
+		}
+		customerRepository.save(customer);
+	}
+	
+	public boolean verify(String verificationCode) {
+		Customer customer = customerRepository.findByVerificationCode(verificationCode);
+		if(customer == null || customer.isEnabled()) {
+			return false;
+		}else {
+			customerRepository.updateEnabledStatus(customer.getId(), true);
+			return true;
+		}
+	}
+	
+	private void encodedPassword(Customer customer) {
+		String encodedPassword = passwordEncoder.encode(customer.getPassword());
+		customer.setPassword(encodedPassword);
+	}
+	
+	public Customer findByEmail(String email) throws CustomerNotFoundException{
+		Customer customer = customerRepository.findByEmail(email);
+		if(customer == null) {
+			throw new CustomerNotFoundException("Could not found customer with email: "+ email);
+		}
+		return customer;
+	}
+	
+	public boolean checkUniqueEmail(String email) {
+		Customer existingCustomer = customerRepository.findByEmail(email);
+		if(existingCustomer == null) return true;
+		boolean isCreatingNew = (id == null || id == 0);
+		if(isCreatingNew) {
+			if(existingCustomer != null) {
+				return false;
+			}
+		}else {
+			if(existingCustomer != null && existingCustomer.getId() != id) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

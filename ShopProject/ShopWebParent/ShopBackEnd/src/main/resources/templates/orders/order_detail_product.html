@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="product">
+		<div class="row mt-1" th:each="orderDetail : ${order.orderDetails}">
+			<div class="col-6">
+				<img th:src="@{'/' + ${orderDetail.product.getMainImagePath}}" class="img-thumbnail" alt="..."
+					style="max-width: 200px">
+			</div>
+			<div class="col-6">
+				<div>
+					<h5>[[${orderDetail.product.name}]]</h5>
+					<p>Product Cost: [[${orderDetail.productCost}]]</p>
+					<p>SubTotal: [[${orderDetail.quantity}]] X [[${orderDetail.unitPrice}]] = [[${orderDetail.subTotal}]]</p>
+					<p>Shipping Cost: [[${orderDetail.shippingCost}]]</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

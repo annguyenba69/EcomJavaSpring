@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('brands')"></head>
+<body>
+<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row">
+						<div class="col-12">
+							<h1 class="jumbotron-heading">Brands</h1>
+							<div class="icon mt-1 mb-2">
+								<a th:href="@{/brands/create}"><i
+									class="fas fa-user-plus fa-2x icon-gray mr-1"></i></a> 
+									
+							</div>
+
+							<div th:replace="fragments :: form_search('brands')"></div>
+
+							<div th:replace="fragments :: message"></div>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th th:replace="fragments :: column_link('brands', 'id', 'Id')"></th>
+										<th scope="col">Logo</th>
+										<th
+											th:replace="fragments :: column_link('brands', 'name', 'Name')"></th>
+										<th scope="col">Categories</th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="brand : ${brands}">
+										<th scope="row">[[${brand.id}]]</th>
+										<td><img th:src="@{${brand.logoPath}}"
+											style="max-width: 70px" /></td>
+										<td>[[${brand.name}]]</td>
+										<td><span th:each="category : ${brand.categories}"
+											class="badge badge-primary mr-1">[[${category.name}]]</span></td>
+										<td><a class="link-detail"
+											th:href="@{'/brands/detail/' + ${brand.id}}"><i
+												class="fas fa-info-circle fa-2x icon-success"></i></a> <a
+											th:href="@{'/brands/edit/' + ${brand.id}}"><i
+												class="fas fa-edit fa-2x icon-success"></i></a> <a
+											class="link-delete" th:userId="${brand.id}"
+											th:href="@{'/brands/delete/' + ${brand.id}}"><i
+												class="fas fa-trash fa-2x icon-danger"></i></a></td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div th:replace="navigation :: paging('brands', 'brands')"></div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="detail-modal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content"></div>
+					</div>
+				</div>
+
+
+				<div th:replace="modal :: confirm-modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+	<script>
+	url = "[[@{'/brands'}]]";
+	
+	$(document).ready(function(){
+		$(".link-detail").on("click", function(e){
+			e.preventDefault();
+			linkDetail = $(this).attr("href");
+			$("#detail-modal").modal("show").find(".modal-content").load(linkDetail);
+		});
+	});
+	
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
+</body>
+</html>

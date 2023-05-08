@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('User Form')"></head>
+<body>
+<div class="page-wrapper chiller-theme toggled">
+		<div th:replace="fragments :: sidebar"></div>
+
+		<div class="page-content">
+			<div class="container-fluid">
+				<div th:replace="fragments :: nav"></div>
+
+				<div class="main-content">
+
+					<div class="row mt-3">
+						<div class="col-12">
+							<div class="card">
+								<h5 class="card-header">Brand Form</h5>
+								<div class="card-body">
+									<form th:action="@{/brands/save}" method="post" th:object="${brand}" enctype="multipart/form-data" onsubmit="return checkUnique(this)">
+										<input type="hidden" th:field="*{id}" />
+										<input type="hidden" th:field="*{logo}" />
+										<div class="form-group">
+											<label for="name">Name</label> <input
+												th:field="*{name}" type="text" class="form-control" minlength = "1" maxlength="128" required="required">
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Logo:</label>
+											<div class="col-sm-8">
+													<input class="mb-2" name="image" type="file" id="fileImage"
+													accept="image/png, image/jpeg" />
+													
+												 <img class="img-fluid"
+													id="thumbnail" th:src="@{${brand.logoPath}}"
+													alt="Photos Preview" style="max-width: 150px" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="">Select one or more categories</label> <select multiple="multiple" size="7" class="form-control" th:field="*{categories}">
+												<th:block th:each="categoryUsedInForm : ${listCategoriesUsedInForm}">
+													<option th:value="${categoryUsedInForm.id}">[[${categoryUsedInForm.name}]]</option>
+												</th:block>
+											</select>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-4 col-form-label">Chosen Categories:</label>
+											<div class="col-sm-8">
+												<div id="chosenCategories"></div>
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" class="btn btn-primary btn-cancel">Cancel</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div th:replace="modal :: modal"></div>
+				<div th:replace="fragments :: footer"></div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	
+	url = "[[@{'/brands'}]]";
+	MAX_FILE_SIZE  = 921600; //100KB
+	
+	function checkUnique(form){
+		urlCheckUnique = "[[@{'/brands/checkUnique'}]]";
+		brandName = $("#name").val();
+		brandId = $("#id").val();
+		csrfValue = $("input[name='_csrf']").val();
+		params = {id: brandId, name : brandName, _csrf: csrfValue};
+		$.post(urlCheckUnique, params, function(responseJSON){
+			if(responseJSON == "Ok"){
+				form.submit();
+			}else if(responseJSON == "DuplicatedName"){
+				showModal("Warning", "Duplicated Name");
+			}else{
+				showModal("Error", "Unknown Response From Server");
+			}
+		}).fail(function(){
+			showModal("Error", "Could Not Connect To The Server");
+		});
+		return false;
+	}
+</script>
+<script th:src="@{/js/brand_form.js}"></script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

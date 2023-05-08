@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="overview">
+		<div class="form-group">
+			<label for="">Order Id</label> <input th:value="${order.id}"
+				type="text" class="form-control" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="">Customer</label> <input
+				th:value="${order.customer.fullName}" type="text"
+				class="form-control" readonly="readonly">
+		</div>
+		<div class="form-group">
+			<label for="">Cost</label> <div th:replace="format :: currency_input(${order.productCost})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Sub Total</label>
+				<div th:replace="format :: currency_input(${order.subtotal})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Shipping Cost</label> <div th:replace="format :: currency_input(${order.shippingCost})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Tax</label> <div th:replace="format :: currency_input(${order.tax})"></div>
+		</div>
+		<div class="form-group">
+			<label for="">Total</label><div th:replace="format :: currency_input(${order.total})"></div>
+			<p>TOTAL = SUBTOTAL + SHIPPING COST + TAX</p>
+		</div>
+		<div class="form-group">
+			<label for="">Payment Method</label> <span
+				class="badge badge-primary">[[${order.paymentMethod}]]</span>
+		</div>
+		<div class="form-group">
+			<label for="">Payment Status</label> <span
+				class="badge badge-primary">[[${order.status}]]</span>
+		</div>
+		<div class="form-group">
+			<label for="">Order Date</label>
+			<td th:text="${#dates.format(order.orderTime, 'dd-MM-yyyy')}"></td>
+		</div>
+	</div>
+</body>
+</html>

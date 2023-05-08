@@ -1,0 +1,70 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Info User</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+
+	<div class="form-group">
+		<label for="email">Email address</label> <input th:value="*{customer.email}"
+			type="email" class="form-control" minlength="3" maxlength="128"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="firstName">First name</label> <input
+			th:value="*{customer.firstName}" type="text" class="form-control"
+			minlength="2" maxlength="45" required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="lastName">Last name</label> <input th:value="*{customer.lastName}"
+			type="text" class="form-control" minlength="2" maxlength="45"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="phoneNumber">Phone Number</label> <input
+			th:value="*{customer.phoneNumber}" type="text" class="form-control"
+			minlength="2" maxlength="15" required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlSelect1">Country</label> 
+		<span class="badge badge-primary">[[${customer.country.name}]]</span>
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlTextarea1">Address Line 1</label>
+		<textarea class="form-control" th:text="*{customer.addressLine1}"
+			id="exampleFormControlTextarea1" rows="3" maxlength="64"
+			required="required" readonly="readonly"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlTextarea1">Address Line 2</label>
+		<textarea class="form-control" th:text="*{customer.addressLine2}"
+			id="exampleFormControlTextarea1" rows="3" maxlength="64" readonly="readonly"></textarea>
+	</div>
+	<div class="form-group">
+		<label for="">City</label> <input th:value="*{customer.city}" type="text"
+			class="form-control" minlength="2" maxlength="45" required="required" readonly="readonly">
+	</div>
+
+	<div class="form-group">
+		<label for="">State</label> <input th:value="*{customer.state}" type="text"
+			class="form-control" minlength="2" maxlength="45" required="required" readonly="readonly">
+	</div>
+	<div class="form-group">
+		<label for="">Postal Code</label> <input th:value="*{customer.postalCode}"
+			type="text" class="form-control" minlength="2" maxlength="10"
+			required="required" readonly="readonly">
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Enabled</label>
+		<div class="col-sm-8" style="padding-top: 7px">
+			<input th:checked="*{customer.enabled}" class="m-2" type="checkbox" disabled="disabled">
+		</div>
+	</div>
+
+
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+</div>

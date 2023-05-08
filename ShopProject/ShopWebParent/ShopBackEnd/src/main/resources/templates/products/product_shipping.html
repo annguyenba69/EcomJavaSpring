@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+	<div th:fragment="shipping">
+		<p>The following information is important to calculate shipping
+			cost for the product the dimensions (L x W x H) is for the box that
+			used to package the product - not the product's dimenstion</p>
+		<div class="form-group">
+			<label for="name">Length(inch)</label> <input th:field="*{length}"
+				type="text" class="form-control" step="0.1">
+		</div>
+		<div class="form-group">
+			<label for="name">Width(inch)</label> <input th:field="*{width}"
+				type="text" class="form-control" step="0.1">
+		</div>
+		<div class="form-group">
+			<label for="name">Height(inch)</label> <input th:field="*{height}"
+				type="text" class="form-control" step="0.1">
+		</div>
+		<div class="form-group">
+			<label for="name">Weight(pounds)</label> <input th:field="*{weight}"
+				type="text" class="form-control" step="0.1">
+		</div>
+	</div>
+</body>
+</html>
