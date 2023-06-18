@@ -49,3 +49,5 @@ Manage (CRUD): </br>
 <img src="https://github.com/annguyenba69/EcomJavaSpring/assets/93418443/eadc7915-bffe-4a9a-a338-e34c69bbf2d7" />
 <br/>
 <img src="https://github.com/annguyenba69/EcomJavaSpring/assets/93418443/b5830e44-1f28-439e-99cf-7d85a009d696" />
+<br/>
+<img src="https://github.com/annguyenba69/EcomJavaSpring/assets/93418443/bfbecfc2-7dd7-4b29-8057-6e695e126037" />
